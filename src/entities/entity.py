@@ -1,25 +1,27 @@
 import pygame
 from pygame.locals import *
-from src.constants import TILE_SIZE
+from src.util.vec2d import Vec2d
 
-class Entity():
-    def __init__(self, x_pos: int, y_pos: int , sprite_path: str):
-        self.x_pos = x_pos
-        self.y_pos = y_pos
+
+class Entity:
+    def __init__(self, pos: Vec2d, hitbox_size: Vec2d, sprite_path: str):
+        self.pos = pos
+        self.hitbox_size = hitbox_size
         self.sprite = pygame.image.load(sprite_path)
-    
+
     def is_overlapping(self, other) -> bool:
-        start_x = self.get_x() - (TILE_SIZE / 2)
-        end_x = self.get_x() + (TILE_SIZE / 2)
+        return (
+            self.pos.x < other.pos.x + other.hitbox_size.x
+            and self.pos.x + self.hitbox_size.x > other.pos.x
+            and self.pos.y < other.pos.y + other.hitbox_size.y
+            and self.pos.y + self.hitbox_size.y > other.pos.y
+        )
 
-        start_y = self.get_y() - (TILE_SIZE / 2)
-        end_y = self.get_y() + (TILE_SIZE / 2)
+    def is_overlapping_point(self, point: Vec2d) -> bool:
+        return (
+            self.pos.x < point.x < self.pos.x + self.hitbox_size.x
+            and self.pos.y < point.y < self.pos.y + self.hitbox_size.y
+        )
 
-        # must be between x and y
-        return (other.get_x() >= start_x and other.get_x() <= end_x) and (other.get_y() >= start_y and other.get_y() <= end_y)
-    
-    def get_x(self):
-        return self.x_pos + (TILE_SIZE / 2)
-    
-    def get_y(self):
-        return self.y_pos + (TILE_SIZE / 2)
+    def get_position(self) -> Vec2d:
+        return Vec2d(self.pos.x, self.pos.y)
