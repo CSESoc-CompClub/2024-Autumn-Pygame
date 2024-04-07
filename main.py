@@ -28,7 +28,6 @@ entities = []
 player = Player(Vec2d(500, 500), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 customer = Customer(Order.FOOD1, Vec2d(100, 100))
-customer.move_to_table(TableSpot(Vec2d(200, 200), True), entities)
 entities.append(customer)
 clock = pygame.time.Clock()
 running = True
@@ -41,9 +40,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    if count % 100 == 0:
-        customer.move_to_table(TableSpot(Vec2d(player.hitbox.x, player.hitbox.y), True), entities)
 
     for entity in entities:
         entity.update(entities)
