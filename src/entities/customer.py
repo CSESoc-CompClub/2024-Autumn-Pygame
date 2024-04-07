@@ -23,10 +23,16 @@ class CState(Enum):
     EATING = 5
     LEAVING = 6
 
+CUSTOMER_STATES: Dict[CState, Surface] = {
+    CState.WAITING_AT_ENTRANCE: pygame.image.load("./sprites/temp/temp_sprite.png"),
+    CState.MOVING_TO_TABLE: pygame.image.load("./sprites/temp/temp_sprite.png"),
+    CState.WAITING_TO_ORDER: pygame.image.load("./sprites/temp/temp_sprite.png"),
+    CState.WAITING_FOR_FOOD: pygame.image.load("./sprites/temp/temp_sprite.png"),
+    CState.EATING: pygame.image.load("./sprites/temp/temp_sprite.png"),
+    CState.LEAVING: pygame.image.load("./sprites/temp/temp_sprite.png"),
+}
 
-CUSTOMER_HAPPY: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-CUSTOMER_ANGRY: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-CUSTOMER_RAISED_HAND: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
+CUSTOMER_SPRITE: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
 
 # 4 is most calm, 1 is almost angry
 PROGRESS_BAR_4: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
@@ -37,9 +43,6 @@ PROGRESS_BAR_1: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
 CUSTOMER_HITBOX_SIZE: Vec2d = Vec2d(TILE_SIZE / 2, TILE_SIZE)
 
 # TODO replace when actual sprites are available
-CUSTOMER_HAPPY = transform.smoothscale(CUSTOMER_HAPPY, (CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y))
-CUSTOMER_ANGRY = transform.smoothscale(CUSTOMER_ANGRY, (CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y))
-CUSTOMER_RAISED_HAND = transform.smoothscale(CUSTOMER_RAISED_HAND, (CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y))
 CUSTOMER_EMPTY = Surface((0, 0))
 
 WAITING_AT_ENTRANCE_TIMEOUT: int = 8000  # 8 seconds
@@ -59,11 +62,19 @@ class Customer:
         pos: Vec2d = Vec2d(0, 0),
     ):
         self.order = order
+        self.angry = False
         self.wait_at_entrance(pos)
 
     def draw(self, screen):
-        screen.blit(self.sprite, self.hitbox.topleft)
+        screen.blit(CUSTOMER_SPRITE, self.hitbox.topleft)
+
+        # place status icon
+        statex, statey = self.hitbox.midtop
+        statey -= 10
+        status_icon_rect = CUSTOMER_STATES[self.state].get_rect(midbottom=(statex, statey))
+        screen.blit(CUSTOMER_STATES[self.state], status_icon_rect)
         
+        # place waiting bar
         if (
             self.state == CState.WAITING_AT_ENTRANCE
             or self.state == CState.WAITING_TO_ORDER
@@ -81,19 +92,17 @@ class Customer:
             else:
                 bar = PROGRESS_BAR_1
 
-            pos = copy.deepcopy(self.hitbox)
+            statusx, statusy = status_icon_rect.midtop
+            statusy -= 10
 
-            barx, bary = self.hitbox.midtop
-            bary -= 10
-
-            screen.blit(bar, bar.get_rect(midbottom=(barx, bary)))
-
+            screen.blit(bar, bar.get_rect(midbottom=(statusx, statusy)))
 
     def update(self, entities: List[Entity]):
         if self.state == CState.WAITING_AT_ENTRANCE:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
-                self.leave(True, entities)
+                self.angry = True
+                self.leave(entities)
     
         elif self.state == CState.MOVING_TO_TABLE:
             self.place_order()
@@ -101,24 +110,25 @@ class Customer:
         elif self.state == CState.WAITING_TO_ORDER:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
-                self.leave(True, entities)
+                self.angry = True
+                self.leave(entities)
 
         elif self.state == CState.WAITING_FOR_FOOD:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
-                self.leave(True, entities)
+                self.angry = True
+                self.leave(entities)
     
         elif self.state == CState.EATING:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
-                self.leave(False, entities)
+                self.leave(entities)
 
         elif self.state == CState.LEAVING:
             self.destroy(entities)
 
     def wait_at_entrance(self, pos: Vec2d = ENTRANCE):
         self.state = CState.WAITING_AT_ENTRANCE
-        self.sprite = CUSTOMER_HAPPY
         self.hitbox = Rect(pos.x, pos.y, CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y)
 
         self.cur_timeout = WAITING_AT_ENTRANCE_TIMEOUT
@@ -126,7 +136,6 @@ class Customer:
 
     def move_to_table(self, spot: TableSpot, entities: List[Entity]):
         self.state = CState.MOVING_TO_TABLE
-        self.sprite = CUSTOMER_HAPPY
         self.hitbox.center = (spot.pos.x, spot.pos.y)
 
         self.cur_timeout = 0
@@ -134,33 +143,27 @@ class Customer:
 
     def place_order(self):
         self.state = CState.WAITING_TO_ORDER
-        self.sprite = CUSTOMER_RAISED_HAND
 
         self.cur_timeout = WAITING_TO_ORDER_TIMEOUT
         self.cur_timer = 0
 
     def receive_order(self):
         self.state = CState.WAITING_FOR_FOOD
-        self.sprite = CUSTOMER_HAPPY
 
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.cur_timer = 0
 
     def start_eating(self):
         self.state = CState.EATING
-        self.sprite = CUSTOMER_HAPPY
 
         self.cur_timeout = EATING_TIMEOUT
         self.cur_timer = 0   
 
     def leave(self, angry: bool, entities: List[Entity]):
         self.state = CState.LEAVING
-        self.sprite = CUSTOMER_ANGRY if angry else CUSTOMER_HAPPY
 
         self.cur_timeout = 0
         self.cur_timer = 0
 
     def destroy(self, entities: List[Entity]):
         entities.remove(self)
-        self.sprite = CUSTOMER_EMPTY
-

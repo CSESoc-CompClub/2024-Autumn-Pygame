@@ -35,3 +35,6 @@ class Player(Entity):
                 0,
             ),
         )
+
+    def draw(self, screen: pygame.Surface):
+        screen.blit(self.sprite, self.hitbox.topleft)

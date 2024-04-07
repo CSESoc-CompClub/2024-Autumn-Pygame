@@ -48,13 +48,14 @@ while running:
     # 1) fill bg
     screen.fill((255, 255, 255))
 
+    for entity in entities:
+        entity.draw(screen)
+
     # 2) fill tiles (map)
 
     # 3) draw player
-    screen.blit(player.sprite, player.hitbox.topleft)
 
     # 4) draw customer
-    screen.blit(customer.sprite, customer.hitbox.topleft)
 
     # 4) draw hud(?)
 
