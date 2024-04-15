@@ -167,3 +167,18 @@ class Customer:
 
     def destroy(self, entities: List[Entity]):
         entities.remove(self)
+
+    def interact(self, food_retrieved):
+        if self.state is CState.WAITING_FOR_FOOD:
+            self.try_receive_order(self, food_retrieved)
+        elif self.state is CState.EATING:
+            return
+        else:
+            self.place_order(self)
+
+    def try_receive_order(self, food_retrieved):
+        if self.order in food_retrieved:
+            food_retrieved.pop(self.order)
+            self.start_eating()
+        else:
+            self.leave(self, True)
