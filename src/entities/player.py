@@ -15,6 +15,7 @@ def get_entities_distance(entity1: Entity, entity2: Entity):
 
 def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
     # remove the entity we are finding the distance to
+    # assumes there is at least one other entity on the screen
     entities.pop(entity)
     nearest_entity = entities[0]
     nearest_distance = get_entities_distance(entity, nearest_entity)
