@@ -19,7 +19,7 @@ def menu(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if play_button.is_clicked(mouse_pos):
-                    return "MAP"
+                    return "GAME"
                 elif credit_button.is_clicked(mouse_pos):
                     return "CREDIT"
                 elif quit_button.is_clicked(mouse_pos):

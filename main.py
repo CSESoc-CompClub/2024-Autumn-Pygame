@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from src.entities.player import Player
 from src.scenes.menu import menu
-from src.scenes.map import map
 from src.scenes.credit import credit
 from src.scenes.score import score
 import src.constants as constants
@@ -21,41 +20,48 @@ pygame.display.set_icon(pygame.image.load("./sprites/temp/temp_icon.png"))
 
 # Scene transition map
 scene_map = {
-    "MENU": {"MAP": "MAP", "CREDIT": "CREDIT"},
-    "MAP": {"MENU": "MENU"},
+    "MENU": {"GAME": "GAME", "CREDIT": "CREDIT"},
+    "GAME": {"SCORE": "SCORE"},
     "CREDIT": {"MENU": "MENU"},
-    "SCORE": {"MAP": "MAP", "MENU": "MENU"}
+    "SCORE": {"GAME": "GAME", "MENU": "MENU"}
 }
+
+# Load background
+background_image = pygame.image.load('spec/images/map_background.jpeg').convert()
+background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
 # Initialise game state
 player = Player()
 clock = pygame.time.Clock()
-running = True;
+running = True
 current_score = 0
 current_scene = "MENU"
 
 # Game Loop #####################################
 while running:
+    screen.fill((0, 0, 0))
+    clock.tick(60)
+    events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.QUIT:
+            running = False
+
     if current_scene == "MENU":
         result = menu(screen)
-    elif current_scene == "MAP":
-        result = map(screen)
     elif current_scene == "CREDIT":
         result = credit(screen)
     elif current_scene == "SCORE":
         result = score(screen, current_score)
+    elif current_scene == "GAME":
+        screen.blit(background_image, (0, 0))
 
-    current_scene = scene_map[current_scene].get(result, current_scene)
-
-    if current_scene == "MAP":
-        clock.tick(60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        # Player
+        # Adding player
         keys = pygame.key.get_pressed()
         player.set_position(keys[K_d] - keys[K_a], keys[K_s] - keys[K_w])
         screen.blit(player.sprite, (player.x_pos, player.y_pos))
-    
-        pygame.display.update()
+
+        # Handle ending the game
+        # result = "SCORE"
+
+    current_scene = scene_map[current_scene].get(result, current_scene)
+    pygame.display.flip()

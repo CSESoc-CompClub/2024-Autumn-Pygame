@@ -30,7 +30,7 @@ def score(screen, current_score):
                 if menu_button.is_clicked(mouse_pos):
                     return "MENU"
                 if play_button.is_clicked(mouse_pos):
-                    return "MAP"
+                    return "GAME"
 
         screen.blit(background_image, (0, 0))
 
