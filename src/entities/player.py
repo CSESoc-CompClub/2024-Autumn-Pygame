@@ -19,11 +19,12 @@ def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
     nearest_entity = entities[0]
     nearest_distance = get_entities_distance(entity, nearest_entity)
     
-    for e in entities[1:]:
-        distance = get_entities_distance(entity, e)
-        if distance < nearest_distance:
-            nearest_entity = e
-            nearest_distance = distance
+    if len(entities) > 1:
+        for e in entities[1:]:
+            distance = get_entities_distance(entity, e)
+            if distance < nearest_distance:
+                nearest_entity = e
+                nearest_distance = distance
     
     return nearest_entity
 
