@@ -1,18 +1,26 @@
 import pygame
+from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
 from src.scenes.menu import menu
 from src.scenes.credit import credit
 from src.scenes.score import score
-import src.constants as constants
+from src.entities.entity import *
+from src.entities.obstacle import *
+from src.entities.customer import *
+from src.entities.player import *
+from src.util.vec2d import *
 
 # Initialise pygame ###############################
 pygame.init()
 
 # Create the screen
-screen = pygame.display.set_mode((
-    constants.TILE_SIZE * constants.GRID_SIZE_X, 
-    constants.TILE_SIZE * constants.GRID_SIZE_Y))
+screen = pygame.display.set_mode(
+    (
+        TILE_SIZE * GRID_SIZE_X,
+        TILE_SIZE * GRID_SIZE_Y,
+    )
+)
 
 # Title and Icon
 pygame.display.set_caption("Let him cook!!")
@@ -30,21 +38,29 @@ scene_map = {
 background_image = pygame.image.load('spec/images/map_background.jpeg').convert()
 background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
+entities = []
+
 # Initialise game state
-player = Player()
+player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
+entities.append(player)
+#customer = Customer(Order.FOOD1, Vec2d(100, 100))
+#entities.append(customer)
 clock = pygame.time.Clock()
 running = True
+count = 0
 current_score = 0
 current_scene = "MENU"
 
 # Game Loop #####################################
 while running:
-    screen.fill((0, 0, 0))
     clock.tick(60)
-    events = pygame.event.get()
-    for event in events:
+    count += 1
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    for entity in entities:
+        entity.update(entities)
 
     if current_scene == "MENU":
         result = menu(screen)
@@ -55,13 +71,11 @@ while running:
     elif current_scene == "GAME":
         screen.blit(background_image, (0, 0))
 
-        # Adding player
-        keys = pygame.key.get_pressed()
-        player.set_position(keys[K_d] - keys[K_a], keys[K_s] - keys[K_w])
-        screen.blit(player.sprite, (player.x_pos, player.y_pos))
+        for entity in entities:
+            entity.draw(screen)
 
         # Handle ending the game
         # result = "SCORE"
 
     current_scene = scene_map[current_scene].get(result, current_scene)
-    pygame.display.flip()
+    pygame.display.update()
