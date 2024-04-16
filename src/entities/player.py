@@ -3,8 +3,8 @@ from pygame.locals import *
 from src.entities.entity import Entity
 from src.constants import *
 from src.util.vec2d import Vec2d
-from enum import *
-from customer import interact
+from src.entities.customer import *
+from src.entities.ingredient import Ingredient
 
 def get_entities_distance(entity1: Entity, entity2: Entity):
     pos1 = entity1.get_position()
@@ -16,12 +16,13 @@ def get_entities_distance(entity1: Entity, entity2: Entity):
 def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
     # remove the entity we are finding the distance to
     # assumes there is at least one other entity on the screen
-    entities.pop(entity)
-    nearest_entity = entities[0]
+    entities_copy = entities
+    entities_copy.pop(entity)
+    nearest_entity = entities_copy[0]
     nearest_distance = get_entities_distance(entity, nearest_entity)
     
-    if len(entities) > 1:
-        for e in entities[1:]:
+    if len(entities_copy) > 1:
+        for e in entities_copy[1:]:
             distance = get_entities_distance(entity, e)
             if distance < nearest_distance:
                 nearest_entity = e
@@ -38,11 +39,11 @@ class Player(Entity):
         self.food_retrieved = []
 
     # Set position and clamp within screen size
-    def update(self, entities: list[Entity], customers: list):
+    def update(self, state):
         keys = pygame.key.get_pressed()
         pos = Vec2d(keys[K_d] - keys[K_a], keys[K_s] - keys[K_w])
 
-        # stop doubled speed when diagonal (~ sqrt(2)/2)
+        # stop doubled speed when moving diagonally (~ sqrt(2)/2)
         speed_cap = 0.7 if pos.x != 0 and pos.y != 0 else 1
 
         self.hitbox.topleft = (
@@ -62,12 +63,15 @@ class Player(Entity):
             ),
         )
 
+        if keys[K_space]:
+             self.interact_nearest(state.entities)
+
     def interact_nearest(self, entities):
             nearest_entity = get_nearest_entity(self, entities)
             if type(nearest_entity) is Ingredient:
                 # two hands to carry ingredients
-                if len(self.food_retrieved < 2):
-                    self.food_retrieved.add(nearest_entity)
+                if len(self.food_retrieved) < 2:
+                    self.food_retrieved.append(nearest_entity)
             elif type(nearest_entity) is Customer:
                 nearest_entity.interact(self, self.food_retrieved)            
 
