@@ -8,9 +8,9 @@ class Ingredient(Entity):
         self.name = name
         self.sprite = pygame.image.load(sprite_path)
 
-    def draw(self, screen):    
+    def draw(self, screen): 
         screen.blit(self.sprite, self.pos)
-    
+
     def get_name(self) -> str:
         return self.name
 

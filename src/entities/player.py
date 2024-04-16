@@ -13,7 +13,7 @@ def get_entities_distance(entity1: Entity, entity2: Entity):
     # use vec2d function supplied
     return pos1.get_distance(pos2)
 
-def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:    
+def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
     nearest_entity = entities[0]
     nearest_distance = 12031239
     for e in entities:
@@ -22,7 +22,9 @@ def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
             if distance < nearest_distance:
                 nearest_entity = e
                 nearest_distance = distance
-    
+
+    print(nearest_distance, nearest_entity)
+
     return nearest_entity
 
 class Player(Entity):
@@ -58,6 +60,7 @@ class Player(Entity):
                 MIN_Y,
             ),
         )
+        self.pos = self.hitbox.topleft
 
         if keys[K_SPACE]:
              self.interact_nearest(state)
@@ -67,10 +70,9 @@ class Player(Entity):
             if type(nearest_entity) is Ingredient:
                 if self.food_retrieved is None:
                     self.food_retrieved = nearest_entity
-                
             elif type(nearest_entity) is Customer:
-                if nearest_entity.interact(self, self.food_retrieved):
-                    self.food_retrieved = None            
+                if nearest_entity.interact(self.food_retrieved):
+                    self.food_retrieved = None
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)

@@ -6,13 +6,6 @@ from src.entities.entity import *
 from src.entities.obstacle import *
 from src.constants import *
 from src.util.vec2d import *
-import math
-
-
-class Order(Enum):
-    FOOD1 = 1
-    FOOD2 = 2
-    FOOD3 = 3
 
 
 class CState(Enum):
@@ -22,6 +15,7 @@ class CState(Enum):
     WAITING_FOR_FOOD = 4
     EATING = 5
     LEAVING = 6
+
 
 CUSTOMER_STATES: Dict[CState, Surface] = {
     CState.WAITING_AT_ENTRANCE: pygame.image.load("./sprites/temp/temp_sprite.png"),
@@ -55,12 +49,13 @@ EXIT = Vec2d(550, 640)
 ENTRANCE = Vec2d(50, 50)
 
 
-class Customer:
+class Customer(Entity):
     def __init__(
         self,
-        order: Order = Order.FOOD1,
+        order: str,
         pos: Vec2d = Vec2d(0, 0),
     ):
+        super().__init__(None, pos)
         self.order = order
         self.angry = False
         self.wait_at_entrance(pos)
@@ -71,9 +66,11 @@ class Customer:
         # place status icon
         statex, statey = self.hitbox.midtop
         statey -= 10
-        status_icon_rect = CUSTOMER_STATES[self.state].get_rect(midbottom=(statex, statey))
+        status_icon_rect = CUSTOMER_STATES[self.state].get_rect(
+            midbottom=(statex, statey)
+        )
         screen.blit(CUSTOMER_STATES[self.state], status_icon_rect)
-        
+
         # place waiting bar
         if (
             self.state == CState.WAITING_AT_ENTRANCE
@@ -103,7 +100,7 @@ class Customer:
             if self.cur_timer >= self.cur_timeout:
                 self.angry = True
                 self.leave(entities)
-    
+
         elif self.state == CState.MOVING_TO_TABLE:
             self.place_order()
 
@@ -118,7 +115,7 @@ class Customer:
             if self.cur_timer >= self.cur_timeout:
                 self.angry = True
                 self.leave(entities)
-    
+
         elif self.state == CState.EATING:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
@@ -157,7 +154,7 @@ class Customer:
         self.state = CState.EATING
 
         self.cur_timeout = EATING_TIMEOUT
-        self.cur_timer = 0   
+        self.cur_timer = 0
 
     def leave(self, angry: bool, entities: List[Entity]):
         self.state = CState.LEAVING
@@ -170,14 +167,14 @@ class Customer:
 
     def interact(self, food_retrieved):
         if self.state is CState.WAITING_FOR_FOOD:
-            self.try_receive_order(self, food_retrieved)
+            self.try_receive_order(food_retrieved)
         elif self.state is CState.EATING:
             return
         else:
-            self.place_order(self)
+            self.place_order()
 
     def try_receive_order(self, food_retrieved) -> bool:
-        if self.order in food_retrieved:
+        if self.order == food_retrieved:
             self.start_eating()
             return True
         else:
