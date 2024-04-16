@@ -1,6 +1,10 @@
 import pygame
 from src.constants import *
 from pygame.locals import *
+from src.entities.player import Player
+from src.scenes.menu import menu
+from src.scenes.credit import credit
+from src.scenes.score import score
 from src.entities.entity import *
 from src.entities.obstacle import *
 from src.entities.customer import *
@@ -22,16 +26,30 @@ screen = pygame.display.set_mode(
 pygame.display.set_caption("Let him cook!!")
 pygame.display.set_icon(pygame.image.load("./sprites/temp/temp_icon.png"))
 
+# Scene transition map
+scene_map = {
+    "MENU": {"GAME": "GAME", "CREDIT": "CREDIT"},
+    "GAME": {"SCORE": "SCORE"},
+    "CREDIT": {"MENU": "MENU"},
+    "SCORE": {"GAME": "GAME", "MENU": "MENU"}
+}
+
+# Load background
+background_image = pygame.image.load('spec/images/map_background.jpeg').convert()
+background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
+
 entities = []
 
 # Initialise game state
-player = Player(Vec2d(500, 500), "./sprites/temp/temp_sprite.png")
+player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
-customer = Customer(Order.FOOD1, Vec2d(100, 100))
-entities.append(customer)
+#customer = Customer(Order.FOOD1, Vec2d(100, 100))
+#entities.append(customer)
 clock = pygame.time.Clock()
 running = True
 count = 0
+current_score = 0
+current_scene = "MENU"
 
 # Game Loop #####################################
 while running:
@@ -44,19 +62,20 @@ while running:
     for entity in entities:
         entity.update(entities)
 
-    # Draw graphics
-    # 1) fill bg
-    screen.fill((255, 255, 255))
+    if current_scene == "MENU":
+        result = menu(screen)
+    elif current_scene == "CREDIT":
+        result = credit(screen)
+    elif current_scene == "SCORE":
+        result = score(screen, current_score)
+    elif current_scene == "GAME":
+        screen.blit(background_image, (0, 0))
 
-    for entity in entities:
-        entity.draw(screen)
+        for entity in entities:
+            entity.draw(screen)
 
-    # 2) fill tiles (map)
+        # Handle ending the game
+        # result = "SCORE"
 
-    # 3) draw player
-
-    # 4) draw customer
-
-    # 4) draw hud(?)
-
+    current_scene = scene_map[current_scene].get(result, current_scene)
     pygame.display.update()

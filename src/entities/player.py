@@ -50,16 +50,16 @@ class Player(Entity):
             max(
                 min(
                     (self.hitbox.x + pos.x * self.speed * speed_cap),
-                    ((GRID_SIZE_X - 1) * TILE_SIZE),
+                    (MAX_X),
                 ),
-                0,
+                MIN_X,
             ),
             max(
                 min(
                     (self.hitbox.y + pos.y * self.speed * speed_cap),
-                    ((GRID_SIZE_Y - 1) * TILE_SIZE),
+                    (MAX_Y),
                 ),
-                0,
+                MIN_Y,
             ),
         )
 
