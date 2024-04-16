@@ -44,7 +44,7 @@ entities = []
 # Initialise game state
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
-entities.append(Ingredient(Vec2d(100, 20), "./sprites/temp/temp_item_tile.png", "cat"))
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", "cat"))
 entities.append(Customer("cat", Vec2d(50, 520)))
 entities.append(Customer("cat", Vec2d(200, 520)))
 entities.append(Customer("cat", Vec2d(350, 520)))
