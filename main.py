@@ -43,7 +43,13 @@ entities = []
 # Initialise game state
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
-# seats =
+
+# Seats
+seats = []
+seat_positions = [position...,]
+for position in seat_positions:
+    seats.append(Seat(position))
+
 #customer = Customer(Order.FOOD1, Vec2d(100, 100))
 #entities.append(customer)
 clock = pygame.time.Clock()
