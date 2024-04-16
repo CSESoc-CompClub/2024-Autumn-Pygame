@@ -63,7 +63,7 @@ class Player(Entity):
             ),
         )
 
-        if keys[K_space]:
+        if keys[K_SPACE]:
              self.interact_nearest(state.entities)
 
     def interact_nearest(self, entities):
