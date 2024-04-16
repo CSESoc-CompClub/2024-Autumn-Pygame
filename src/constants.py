@@ -11,6 +11,10 @@ MAX_X = 700
 MIN_Y = 50
 MAX_Y = 350
 
+FLOOR_MIN_X = 50
+FLOOR_MIN_Y = 130
+
+
 # Colors
 BLACK = (18,8,6,255)
 WHITE = (245, 217, 171, 1)

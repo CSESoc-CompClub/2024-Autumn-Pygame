@@ -43,18 +43,22 @@ entities = []
 # Initialise game state
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
+# seats =
 #customer = Customer(Order.FOOD1, Vec2d(100, 100))
 #entities.append(customer)
 clock = pygame.time.Clock()
 running = True
-count = 0
+count = 10
 current_score = 0
 current_scene = "MENU"
 
+# HUD Stuff
+font = pygame.font.SysFont('Palatino', 30)
+title_pos = (FLOOR_MIN_X, FLOOR_MIN_Y)
+
+
 # Game Loop #####################################
 while running:
-    clock.tick(60)
-    count += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -69,13 +73,30 @@ while running:
     elif current_scene == "SCORE":
         result = score(screen, current_score)
     elif current_scene == "GAME":
+        if count < 0:
+            result = "SCORE"
+            count = 10
+            current_score = 0
+        
         screen.blit(background_image, (0, 0))
+        clock.tick(60)
 
+        count -= 1/60
         for entity in entities:
             entity.draw(screen)
 
         # Handle ending the game
-        # result = "SCORE"
+        time_text = font.render(f'Time: {int(count)} sec', True, 0xFFFF)
+        score_text = font.render(f'Score: {current_score}', True, 0xFFFF)
+        curr_c_text = font.render(f'Currently carrying: ', True, 0xFFFF)
+        
+        
+        screen.blit(time_text, title_pos)
+        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 20))
+        screen.blit(curr_c_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
+        pygame.draw.rect(screen, 0xFFFF, pygame.Rect(FLOOR_MIN_X + 200, FLOOR_MIN_Y + 40, 30, 30))
+        
+
 
     current_scene = scene_map[current_scene].get(result, current_scene)
     pygame.display.update()
