@@ -3,7 +3,6 @@ from enum import *
 from typing import *
 from pygame import *
 from src.entities.entity import *
-from src.entities.obstacle import *
 from src.constants import *
 from src.util.vec2d import *
 
@@ -69,9 +68,7 @@ class Customer(Entity):
         screen.blit(CUSTOMER_STATES[self.state], status_icon_rect)
 
         # place waiting bar
-        if (
-            self.state == CState.WAITING_FOR_FOOD
-        ):
+        if self.state == CState.WAITING_FOR_FOOD:
             # 3 thresholds means for distinct progress bars
             bar: Surface = None
 
@@ -104,7 +101,6 @@ class Customer(Entity):
         elif self.state == CState.LEAVING:
             self.destroy(entities)
 
-        print(self.state)
     def receive_order(self):
         self.state = CState.WAITING_FOR_FOOD
 
@@ -112,7 +108,6 @@ class Customer(Entity):
         self.cur_timer = 0
 
     def start_eating(self):
-        print("eating")
         self.state = CState.EATING
 
         self.cur_timeout = EATING_TIMEOUT
@@ -128,15 +123,12 @@ class Customer(Entity):
         entities.remove(self)
 
     def interact(self, food_retrieved):
-        print(self.state)
         if self.state is CState.WAITING_FOR_FOOD:
             self.try_receive_order(food_retrieved)
         elif self.state is CState.EATING:
             return
         else:
             self.place_order()
-
-        print(self.state)
 
     def try_receive_order(self, food_retrieved) -> bool:
         if self.order == food_retrieved:

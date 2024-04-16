@@ -6,7 +6,6 @@ from src.scenes.menu import menu
 from src.scenes.credit import credit
 from src.scenes.score import score
 from src.entities.entity import *
-from src.entities.obstacle import *
 from src.entities.customer import *
 from src.entities.player import *
 from src.util.vec2d import *
@@ -31,19 +30,21 @@ scene_map = {
     "MENU": {"GAME": "GAME", "CREDIT": "CREDIT"},
     "GAME": {"SCORE": "SCORE"},
     "CREDIT": {"MENU": "MENU"},
-    "SCORE": {"GAME": "GAME", "MENU": "MENU"}
+    "SCORE": {"GAME": "GAME", "MENU": "MENU"},
 }
 
 # Load background
-background_image = pygame.image.load('spec/images/map_background.jpeg').convert()
-background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
+background_image = pygame.image.load("spec/images/map_background.jpeg").convert()
+background_image = pygame.transform.scale(
+    background_image, (screen.get_width(), screen.get_height())
+)
 
 entities = []
 
 # Initialise game state
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
-entities.append(Ingredient(Vec2d(500, 500), "./sprites/temp/temp_item_tile.png", 'cat'))
+entities.append(Ingredient(Vec2d(500, 500), "./sprites/temp/temp_item_tile.png", "cat"))
 customer = Customer("cat", Vec2d(100, 100))
 entities.append(customer)
 clock = pygame.time.Clock()
