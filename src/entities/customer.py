@@ -9,18 +9,12 @@ from src.util.vec2d import *
 
 
 class CState(Enum):
-    WAITING_AT_ENTRANCE = 1
-    MOVING_TO_TABLE = 2
-    WAITING_TO_ORDER = 3
-    WAITING_FOR_FOOD = 4
-    EATING = 5
-    LEAVING = 6
+    WAITING_FOR_FOOD = 1
+    EATING = 2
+    LEAVING = 3
 
 
 CUSTOMER_STATES: Dict[CState, Surface] = {
-    CState.WAITING_AT_ENTRANCE: pygame.image.load("./sprites/temp/temp_sprite.png"),
-    CState.MOVING_TO_TABLE: pygame.image.load("./sprites/temp/temp_sprite.png"),
-    CState.WAITING_TO_ORDER: pygame.image.load("./sprites/temp/temp_sprite.png"),
     CState.WAITING_FOR_FOOD: pygame.image.load("./sprites/temp/temp_sprite.png"),
     CState.EATING: pygame.image.load("./sprites/temp/temp_sprite.png"),
     CState.LEAVING: pygame.image.load("./sprites/temp/temp_sprite.png"),
@@ -42,7 +36,7 @@ CUSTOMER_EMPTY = Surface((0, 0))
 WAITING_AT_ENTRANCE_TIMEOUT: int = 8000  # 8 seconds
 WAITING_TO_ORDER_TIMEOUT: int = 8000  # 8 seconds
 WAITING_FOR_FOOD_TIMEOUT: int = 8000  # 8 seconds
-EATING_TIMEOUT: int = 8000  # 8 seconds
+EATING_TIMEOUT: int = 240  # 5  mseconds
 
 # TODO replace when map is complete
 EXIT = Vec2d(550, 640)
@@ -58,7 +52,10 @@ class Customer(Entity):
         super().__init__(None, pos)
         self.order = order
         self.angry = False
-        self.wait_at_entrance(pos)
+        self.state = CState.WAITING_FOR_FOOD
+        self.cur_timer = 0
+        self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
+        self.hitbox = Rect(pos.x, pos.y, CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y)
 
     def draw(self, screen):
         screen.blit(CUSTOMER_SPRITE, self.hitbox.topleft)
@@ -73,9 +70,7 @@ class Customer(Entity):
 
         # place waiting bar
         if (
-            self.state == CState.WAITING_AT_ENTRANCE
-            or self.state == CState.WAITING_TO_ORDER
-            or self.state == CState.WAITING_FOR_FOOD
+            self.state == CState.WAITING_FOR_FOOD
         ):
             # 3 thresholds means for distinct progress bars
             bar: Surface = None
@@ -95,55 +90,21 @@ class Customer(Entity):
             screen.blit(bar, bar.get_rect(midbottom=(statusx, statusy)))
 
     def update(self, entities: List[Entity]):
-        if self.state == CState.WAITING_AT_ENTRANCE:
+        if self.state == CState.WAITING_FOR_FOOD:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
                 self.angry = True
-                self.leave(entities)
-
-        elif self.state == CState.MOVING_TO_TABLE:
-            self.place_order()
-
-        elif self.state == CState.WAITING_TO_ORDER:
-            self.cur_timer += 1
-            if self.cur_timer >= self.cur_timeout:
-                self.angry = True
-                self.leave(entities)
-
-        elif self.state == CState.WAITING_FOR_FOOD:
-            self.cur_timer += 1
-            if self.cur_timer >= self.cur_timeout:
-                self.angry = True
-                self.leave(entities)
+                self.leave(True)
 
         elif self.state == CState.EATING:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
-                self.leave(entities)
+                self.leave(False)
 
         elif self.state == CState.LEAVING:
             self.destroy(entities)
 
-    def wait_at_entrance(self, pos: Vec2d = ENTRANCE):
-        self.state = CState.WAITING_AT_ENTRANCE
-        self.hitbox = Rect(pos.x, pos.y, CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y)
-
-        self.cur_timeout = WAITING_AT_ENTRANCE_TIMEOUT
-        self.cur_timer = 0
-
-    def move_to_table(self, spot: TableSpot, entities: List[Entity]):
-        self.state = CState.MOVING_TO_TABLE
-        self.hitbox.center = (spot.pos.x, spot.pos.y)
-
-        self.cur_timeout = 0
-        self.cur_timer = 0
-
-    def place_order(self):
-        self.state = CState.WAITING_TO_ORDER
-
-        self.cur_timeout = WAITING_TO_ORDER_TIMEOUT
-        self.cur_timer = 0
-
+        print(self.state)
     def receive_order(self):
         self.state = CState.WAITING_FOR_FOOD
 
@@ -151,12 +112,13 @@ class Customer(Entity):
         self.cur_timer = 0
 
     def start_eating(self):
+        print("eating")
         self.state = CState.EATING
 
         self.cur_timeout = EATING_TIMEOUT
         self.cur_timer = 0
 
-    def leave(self, angry: bool, entities: List[Entity]):
+    def leave(self, angry: bool):
         self.state = CState.LEAVING
 
         self.cur_timeout = 0
@@ -166,6 +128,7 @@ class Customer(Entity):
         entities.remove(self)
 
     def interact(self, food_retrieved):
+        print(self.state)
         if self.state is CState.WAITING_FOR_FOOD:
             self.try_receive_order(food_retrieved)
         elif self.state is CState.EATING:
@@ -173,10 +136,12 @@ class Customer(Entity):
         else:
             self.place_order()
 
+        print(self.state)
+
     def try_receive_order(self, food_retrieved) -> bool:
         if self.order == food_retrieved:
             self.start_eating()
             return True
         else:
-            self.leave(self, True)
+            self.leave(True)
             return False

@@ -22,9 +22,6 @@ def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
             if distance < nearest_distance:
                 nearest_entity = e
                 nearest_distance = distance
-
-    print(nearest_distance, nearest_entity)
-
     return nearest_entity
 
 class Player(Entity):
@@ -71,7 +68,7 @@ class Player(Entity):
                 if self.food_retrieved is None:
                     self.food_retrieved = nearest_entity
             elif type(nearest_entity) is Customer:
-                if nearest_entity.interact(self.food_retrieved):
+                if nearest_entity.interact(self.food_retrieved.name):
                     self.food_retrieved = None
 
     def draw(self, screen: pygame.Surface):
