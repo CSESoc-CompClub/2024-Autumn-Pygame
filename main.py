@@ -1,3 +1,4 @@
+import random
 import pygame
 from src.constants import *
 from pygame.locals import *
@@ -44,12 +45,19 @@ entities = []
 # Initialise game state
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
+
+# Adding Ingredients
 entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", "cat"))
-entities.append(Customer("cat", Vec2d(50, 520)))
-entities.append(Customer("cat", Vec2d(200, 520)))
-entities.append(Customer("cat", Vec2d(350, 520)))
-entities.append(Customer("cat", Vec2d(500, 520)))
-entities.append(Customer("cat", Vec2d(640, 520)))
+
+# Adding customers
+customer_1 = Customer("cat", Vec2d(50, 520))
+customer_2 = Customer("cat", Vec2d(200, 520))
+customer_3 = Customer("cat", Vec2d(350, 520))
+customer_4 = Customer("cat", Vec2d(500, 520))
+customer_5 = Customer("cat", Vec2d(640, 520))
+entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
+
+# Setting up Game State
 clock = pygame.time.Clock()
 running = True
 count = 0
@@ -81,6 +89,23 @@ while running:
 
         # Handle ending the game
         # result = "SCORE"
+
+    if random.randint(0, 1000) > 997:
+        if customer_1 not in entities:
+            customer_1 = Customer("cat", Vec2d(50, 520))
+            entities.append(customer_1)
+        elif customer_2 not in entities:
+            customer_2 = Customer("cat", Vec2d(200, 520))
+            entities.append(customer_2)
+        elif customer_3 not in entities:
+            customer_3 = Customer("cat", Vec2d(350, 520))
+            entities.append(customer_3)
+        elif customer_4 not in entities:
+            customer_4 = Customer("cat", Vec2d(500, 520))
+            entities.append(customer_4)
+        elif customer_5 not in entities:
+            customer_5 = Customer("cat", Vec2d(640, 520))
+            entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)
     pygame.display.update()

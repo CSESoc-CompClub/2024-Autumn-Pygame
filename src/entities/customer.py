@@ -74,7 +74,7 @@ class Customer(Entity):
 
         #     screen.blit(bar, bar.get_rect(midbottom=(statusx, statusy)))
 
-    def update(self, entities: List[Entity]):
+    def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
@@ -107,7 +107,7 @@ class Customer(Entity):
         self.cur_timeout = 0
         self.cur_timer = 0
 
-    def destroy(self, entities: List[Entity]):
+    def destroy(self, entities: list[Entity]):
         entities.remove(self)
 
     def interact(self, food_retrieved):
