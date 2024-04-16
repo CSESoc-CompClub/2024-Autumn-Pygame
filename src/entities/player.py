@@ -13,16 +13,11 @@ def get_entities_distance(entity1: Entity, entity2: Entity):
     # use vec2d function supplied
     return pos1.get_distance(pos2)
 
-def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
-    # remove the entity we are finding the distance to
-    # assumes there is at least one other entity on the screen
-    entities_copy = entities
-    entities_copy.pop(entity)
-    nearest_entity = entities_copy[0]
-    nearest_distance = get_entities_distance(entity, nearest_entity)
-    
-    if len(entities_copy) > 1:
-        for e in entities_copy[1:]:
+def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:    
+    nearest_entity = entities[0]
+    nearest_distance = 12031239
+    for e in entities:
+        if e != entity:
             distance = get_entities_distance(entity, e)
             if distance < nearest_distance:
                 nearest_entity = e
@@ -36,7 +31,8 @@ class Player(Entity):
         self.hitbox = Rect(pos.x, pos.y, TILE_SIZE, TILE_SIZE)
         self.sprite = pygame.image.load(sprite_path)
         # orders retrieved from the kitchen
-        self.food_retrieved = []
+        self.food_retrieved = None
+        super().__init__(self.hitbox, pos)
 
     # Set position and clamp within screen size
     def update(self, state):
@@ -64,16 +60,17 @@ class Player(Entity):
         )
 
         if keys[K_SPACE]:
-             self.interact_nearest(state.entities)
+             self.interact_nearest(state)
 
     def interact_nearest(self, entities):
             nearest_entity = get_nearest_entity(self, entities)
             if type(nearest_entity) is Ingredient:
-                # two hands to carry ingredients
-                if len(self.food_retrieved) < 2:
-                    self.food_retrieved.append(nearest_entity)
+                if self.food_retrieved is None:
+                    self.food_retrieved = nearest_entity
+                
             elif type(nearest_entity) is Customer:
-                nearest_entity.interact(self, self.food_retrieved)            
+                if nearest_entity.interact(self, self.food_retrieved):
+                    self.food_retrieved = None            
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)

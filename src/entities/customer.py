@@ -176,9 +176,10 @@ class Customer:
         else:
             self.place_order(self)
 
-    def try_receive_order(self, food_retrieved):
+    def try_receive_order(self, food_retrieved) -> bool:
         if self.order in food_retrieved:
-            food_retrieved.pop(self.order)
             self.start_eating()
+            return True
         else:
             self.leave(self, True)
+            return False

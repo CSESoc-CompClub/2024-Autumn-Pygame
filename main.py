@@ -43,8 +43,9 @@ entities = []
 # Initialise game state
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
+entities.append(Ingredient(Vec2d(0, 0), "./sprites/temp/temp_sprite.png", 'hello'))
 #customer = Customer(Order.FOOD1, Vec2d(100, 100))
-#entities.append(customer)
+entities.append(customer)
 clock = pygame.time.Clock()
 running = True
 count = 0
