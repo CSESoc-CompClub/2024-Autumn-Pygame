@@ -70,7 +70,7 @@ class Player(Entity):
         if type(nearest_entity) is Ingredient:
             if self.food_retrieved is None:
                 self.food_retrieved = nearest_entity
-        elif type(nearest_entity) is Customer:
+        elif type(nearest_entity) is Customer and self.food_retrieved:
             if nearest_entity.interact(self.food_retrieved.name):
                 self.food_retrieved = None
 
