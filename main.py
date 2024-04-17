@@ -1,3 +1,4 @@
+import random
 import pygame
 from src.constants import *
 from pygame.locals import *
@@ -6,7 +7,6 @@ from src.scenes.menu import menu
 from src.scenes.credit import credit
 from src.scenes.score import score
 from src.entities.entity import *
-from src.entities.obstacle import *
 from src.entities.customer import *
 from src.entities.player import *
 from src.util.vec2d import *
@@ -31,12 +31,14 @@ scene_map = {
     "MENU": {"GAME": "GAME", "CREDIT": "CREDIT"},
     "GAME": {"SCORE": "SCORE"},
     "CREDIT": {"MENU": "MENU"},
-    "SCORE": {"GAME": "GAME", "MENU": "MENU"}
+    "SCORE": {"GAME": "GAME", "MENU": "MENU"},
 }
 
 # Load background
-background_image = pygame.image.load('spec/images/map_background.jpeg').convert()
-background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
+background_image = pygame.image.load("spec/images/map_background.jpeg").convert()
+background_image = pygame.transform.scale(
+    background_image, (screen.get_width(), screen.get_height())
+)
 
 entities = []
 
@@ -44,14 +46,18 @@ entities = []
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
-# Seats
-seats = []
-seat_positions = [position...,]
-for position in seat_positions:
-    seats.append(Seat(position))
+# Adding Ingredients
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", "cat"))
 
-#customer = Customer(Order.FOOD1, Vec2d(100, 100))
-#entities.append(customer)
+# Adding customers
+customer_1 = Customer("cat", Vec2d(50, 520))
+customer_2 = Customer("cat", Vec2d(200, 520))
+customer_3 = Customer("cat", Vec2d(350, 520))
+customer_4 = Customer("cat", Vec2d(500, 520))
+customer_5 = Customer("cat", Vec2d(640, 520))
+entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
+
+# Setting up Game State
 clock = pygame.time.Clock()
 running = True
 count = 10
@@ -92,17 +98,24 @@ while running:
             entity.draw(screen)
 
         # Handle ending the game
-        time_text = font.render(f'Time: {int(count)} sec', True, 0xFFFF)
-        score_text = font.render(f'Score: {current_score}', True, 0xFFFF)
-        curr_c_text = font.render(f'Currently carrying: ', True, 0xFFFF)
-        
-        
-        screen.blit(time_text, title_pos)
-        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 20))
-        screen.blit(curr_c_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
-        pygame.draw.rect(screen, 0xFFFF, pygame.Rect(FLOOR_MIN_X + 200, FLOOR_MIN_Y + 40, 30, 30))
-        
+        # result = "SCORE"
 
+    if random.randint(0, 1000) > 997:
+        if customer_1 not in entities:
+            customer_1 = Customer("cat", Vec2d(50, 520))
+            entities.append(customer_1)
+        elif customer_2 not in entities:
+            customer_2 = Customer("cat", Vec2d(200, 520))
+            entities.append(customer_2)
+        elif customer_3 not in entities:
+            customer_3 = Customer("cat", Vec2d(350, 520))
+            entities.append(customer_3)
+        elif customer_4 not in entities:
+            customer_4 = Customer("cat", Vec2d(500, 520))
+            entities.append(customer_4)
+        elif customer_5 not in entities:
+            customer_5 = Customer("cat", Vec2d(640, 520))
+            entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)
     pygame.display.update()
