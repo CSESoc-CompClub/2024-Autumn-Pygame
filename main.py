@@ -105,14 +105,14 @@ while running:
             entity.draw(screen)
 
         # HUD
-        time_text = font.render(f'Time: {int(count)} sec', True, 0xFFFF)
-        score_text = font.render(f'Score: {player.score}', True, 0xFFFF)
-        curr_c_text = font.render(f'Currently carrying: ', True, 0xFFFF)
+        time_text = font.render(f'Time: {int(count)} sec', True, WHITE)
+        score_text = font.render(f'Score: {player.score}', True, WHITE)
+        curr_c_text = font.render(f'Currently carrying: ', True, WHITE)
 
         screen.blit(time_text, title_pos)
         screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 20))
         screen.blit(curr_c_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
-        pygame.draw.rect(screen, 0xFFFF, pygame.Rect(FLOOR_MIN_X + 200, FLOOR_MIN_Y + 40, 30, 30))
+        pygame.draw.rect(screen, WHITE, pygame.Rect(FLOOR_MIN_X + 200, FLOOR_MIN_Y + 40, 30, 30))
 
     if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
