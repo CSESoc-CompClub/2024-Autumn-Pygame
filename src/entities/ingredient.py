@@ -3,11 +3,17 @@ from src.util.vec2d import *
 import pygame
 
 
+INGREDIENTS = {
+    "watermelon": pygame.transform.scale(pygame.image.load("./sprites/watermelon.png"), (120, 120)),
+    "sushi": pygame.transform.scale(pygame.image.load("./sprites/sushi.png"), (120, 120))
+}
+
+
 class Ingredient(Entity):
-    def __init__(self, pos, sprite_path: str, name: str):
+    def __init__(self, pos, sprite: str, name: str):
         super().__init__(None, pos)
         self.name = name
-        self.sprite = pygame.image.load(sprite_path)
+        self.sprite = sprite
 
     def draw(self, screen):
         screen.blit(self.sprite, self.pos)
