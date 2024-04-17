@@ -49,7 +49,7 @@ player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_spri
 entities.append(player)
 
 # Adding Ingredients
-ingredients = ["watermelon", "sushi", "peach", "banana", "grapes"]
+# ingredients = ["watermelon", "sushi", "peach", "banana", "grapes"]
 entities.append(Ingredient(Vec2d(60, 0), INGREDIENTS["watermelon"], "watermelon"))
 entities.append(Ingredient(Vec2d(190, 0), INGREDIENTS["sushi"], "sushi"))
 
