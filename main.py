@@ -1,5 +1,6 @@
 import random
 import pygame
+from src.entities.ingredient import INGREDIENTS
 from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
@@ -43,16 +44,14 @@ background_image = pygame.transform.scale(
 entities = []
 
 # Initialise game state
+ingredients = ["watermelon", "sushi"]
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
 # Adding Ingredients
-ingredients = ["watermelon", "lemon", "peach", "banana", "grapes"]
-entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[0]))
-entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[1]))
-entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[2]))
-entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[3]))
-entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[4]))
+ingredients = ["watermelon", "sushi", "peach", "banana", "grapes"]
+entities.append(Ingredient(Vec2d(60, 0), INGREDIENTS["watermelon"], "watermelon"))
+entities.append(Ingredient(Vec2d(190, 0), INGREDIENTS["sushi"], "sushi"))
 
 
 # Adding customers
@@ -61,6 +60,7 @@ customer_2 = Customer(ingredients[random.randint(0,4)], player, Vec2d(200, 520))
 customer_3 = Customer(ingredients[random.randint(0,4)], player, Vec2d(350, 520))
 customer_4 = Customer(ingredients[random.randint(0,4)], player, Vec2d(500, 520))
 customer_5 = Customer(ingredients[random.randint(0,4)], player, Vec2d(640, 520))
+
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
 
 # Setting up Game State

@@ -2,6 +2,7 @@ import copy
 from enum import *
 from typing import *
 from pygame import *
+from src.entities.ingredient import INGREDIENTS
 from src.entities.entity import *
 from src.constants import *
 from src.util.vec2d import *
@@ -56,9 +57,9 @@ class Customer(Entity):
 
         # place status icon
         statex, statey = self.hitbox.topleft
-        screen.blit(CUSTOMER_STATES[self.state], (statex, statey))
+        screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
 
-        # place waiting bar 
+        # place waiting bar
         # if self.state == CState.WAITING_FOR_FOOD:
         #     # 3 thresholds means for distinct progress bars
         #     bar: Surface = None
