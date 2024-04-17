@@ -22,6 +22,8 @@ CUSTOMER_STATES: Dict[CState, Surface] = {
 }
 
 CUSTOMER_SPRITE: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
+EATING_SPRITE: Surface = pygame.transform.scale(pygame.image.load("./sprites/eating.png"), (120, 120))
+
 
 # 4 is most calm, 1 is almost angry
 PROGRESS_BAR_4: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
@@ -58,7 +60,7 @@ class Customer(Entity):
         # place status icon
         statex, statey = self.hitbox.topleft
         if self.state == CState.EATING:
-            screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
+            screen.blit(EATING_SPRITE, (statex - 20, statey - 20))
         else:
             screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
             
