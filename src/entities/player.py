@@ -38,6 +38,12 @@ class Player(Entity):
 
     # Set position and clamp within screen size
     def update(self, state):
+        self.move()
+        keys = pygame.key.get_pressed()
+        if keys[K_SPACE]:
+            self.interact_nearest(state)
+
+    def move(self):
         keys = pygame.key.get_pressed()
         pos = Vec2d(keys[K_d] - keys[K_a], keys[K_s] - keys[K_w])
 
@@ -60,10 +66,8 @@ class Player(Entity):
                 MIN_Y,
             ),
         )
-        self.pos = self.hitbox.topleft
 
-        if keys[K_SPACE]:
-            self.interact_nearest(state)
+        self.pos = self.hitbox.topleft
 
     def interact_nearest(self, entities):
         nearest_entity = get_nearest_entity(self, entities)
