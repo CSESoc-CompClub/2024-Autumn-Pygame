@@ -44,7 +44,7 @@ background_image = pygame.transform.scale(
 entities = []
 
 # Initialise game state
-ingredients = ["watermelon", "sushi"]
+ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
@@ -52,6 +52,10 @@ entities.append(player)
 # ingredients = ["watermelon", "sushi", "peach", "banana", "grapes"]
 entities.append(Ingredient(Vec2d(60, 0), INGREDIENTS["watermelon"], "watermelon"))
 entities.append(Ingredient(Vec2d(190, 0), INGREDIENTS["sushi"], "sushi"))
+entities.append(Ingredient(Vec2d(320, 0), INGREDIENTS["peach"], "peach"))
+entities.append(Ingredient(Vec2d(450, 0), INGREDIENTS["banana"], "banana"))
+entities.append(Ingredient(Vec2d(580, 0), INGREDIENTS["grapes"], "grapes"))
+entities.append(Ingredient(Vec2d(720, 0), INGREDIENTS["strawberry"], "strawberry"))
 
 
 # Adding customers

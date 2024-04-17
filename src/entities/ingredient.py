@@ -5,7 +5,11 @@ import pygame
 
 INGREDIENTS = {
     "watermelon": pygame.transform.scale(pygame.image.load("./sprites/watermelon.png"), (120, 120)),
-    "sushi": pygame.transform.scale(pygame.image.load("./sprites/sushi.png"), (120, 120))
+    "sushi": pygame.transform.scale(pygame.image.load("./sprites/sushi.png"), (120, 120)),
+    "peach": pygame.transform.scale(pygame.image.load("./sprites/peach.png"), (120, 120)),
+    "banana": pygame.transform.scale(pygame.image.load("./sprites/banana.png"), (120, 120)),
+    "grapes": pygame.transform.scale(pygame.image.load("./sprites/grapes.png"), (120, 120)),
+    "strawberry": pygame.transform.scale(pygame.image.load("./sprites/strawberry.png"), (120, 120))
 }
 
 
