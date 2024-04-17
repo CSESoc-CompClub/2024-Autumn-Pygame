@@ -81,3 +81,7 @@ class Player(Entity):
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)
+        if self.food_retrieved is not None:
+            screen.blit(INGREDIENTS[self.food_retrieved.name], self.hitbox.topleft)
+            
+        

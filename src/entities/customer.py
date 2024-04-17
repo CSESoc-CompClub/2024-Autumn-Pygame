@@ -57,7 +57,11 @@ class Customer(Entity):
 
         # place status icon
         statex, statey = self.hitbox.topleft
-        screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
+        if self.state == CState.EATING:
+            screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
+        else:
+            screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
+            
 
         # place waiting bar
         # if self.state == CState.WAITING_FOR_FOOD:

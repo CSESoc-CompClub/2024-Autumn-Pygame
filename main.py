@@ -44,12 +44,11 @@ background_image = pygame.transform.scale(
 entities = []
 
 # Initialise game state
-ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
 # Adding Ingredients
-# ingredients = ["watermelon", "sushi", "peach", "banana", "grapes"]
+ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
 entities.append(Ingredient(Vec2d(60, 0), INGREDIENTS["watermelon"], "watermelon"))
 entities.append(Ingredient(Vec2d(190, 0), INGREDIENTS["sushi"], "sushi"))
 entities.append(Ingredient(Vec2d(320, 0), INGREDIENTS["peach"], "peach"))
@@ -59,18 +58,18 @@ entities.append(Ingredient(Vec2d(720, 0), INGREDIENTS["strawberry"], "strawberry
 
 
 # Adding customers
-customer_1 = Customer(ingredients[random.randint(0,4)], player, Vec2d(50, 520))
-customer_2 = Customer(ingredients[random.randint(0,4)], player, Vec2d(200, 520))
-customer_3 = Customer(ingredients[random.randint(0,4)], player, Vec2d(350, 520))
-customer_4 = Customer(ingredients[random.randint(0,4)], player, Vec2d(500, 520))
-customer_5 = Customer(ingredients[random.randint(0,4)], player, Vec2d(640, 520))
+customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
+customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
+customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
+customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
+customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
 
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
 
 # Setting up Game State
 clock = pygame.time.Clock()
 running = True
-count = 100
+count = 60
 current_score = 0
 current_scene = "MENU"
 
@@ -98,7 +97,7 @@ while running:
         # Handle time out
         if count < 0:
             result = "SCORE"
-            count = 10
+            count = 60
             player.score = 0
         
         screen.blit(background_image, (0, 0))
@@ -120,19 +119,19 @@ while running:
 
     if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
-            customer_1 = Customer(ingredients[random.randint(0,4)], player, Vec2d(50, 520))
+            customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
             entities.append(customer_1)
         elif customer_2 not in entities:
-            customer_2 = Customer(ingredients[random.randint(0,4)], player, Vec2d(200, 520))
+            customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
             entities.append(customer_2)
         elif customer_3 not in entities:
-            customer_3 = Customer(ingredients[random.randint(0,4)], player, Vec2d(350, 520))
+            customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
             entities.append(customer_3)
         elif customer_4 not in entities:
-            customer_4 = Customer(ingredients[random.randint(0,4)], player, Vec2d(500, 520))
+            customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
             entities.append(customer_4)
         elif customer_5 not in entities:
-            customer_5 = Customer(ingredients[random.randint(0,4)], player, Vec2d(640, 520))
+            customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
             entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)
