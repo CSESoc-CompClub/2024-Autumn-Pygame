@@ -47,20 +47,26 @@ player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_spri
 entities.append(player)
 
 # Adding Ingredients
-entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", "cat"))
+ingredients = ["watermelon", "lemon", "peach", "banana", "grapes"]
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[0]))
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[1]))
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[2]))
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[3]))
+entities.append(Ingredient(Vec2d(85, 22), "./sprites/temp/temp_item_tile.png", ingredients[4]))
+
 
 # Adding customers
-customer_1 = Customer("cat", Vec2d(50, 520))
-customer_2 = Customer("cat", Vec2d(200, 520))
-customer_3 = Customer("cat", Vec2d(350, 520))
-customer_4 = Customer("cat", Vec2d(500, 520))
-customer_5 = Customer("cat", Vec2d(640, 520))
+customer_1 = Customer(ingredients[random.randint(0,4)], player, Vec2d(50, 520))
+customer_2 = Customer(ingredients[random.randint(0,4)], player, Vec2d(200, 520))
+customer_3 = Customer(ingredients[random.randint(0,4)], player, Vec2d(350, 520))
+customer_4 = Customer(ingredients[random.randint(0,4)], player, Vec2d(500, 520))
+customer_5 = Customer(ingredients[random.randint(0,4)], player, Vec2d(640, 520))
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
 
 # Setting up Game State
 clock = pygame.time.Clock()
 running = True
-count = 10
+count = 100
 current_score = 0
 current_scene = "MENU"
 
@@ -83,12 +89,13 @@ while running:
     elif current_scene == "CREDIT":
         result = credit(screen)
     elif current_scene == "SCORE":
-        result = score(screen, current_score)
+        result = score(screen, player.score)
     elif current_scene == "GAME":
+        # Handle time out
         if count < 0:
             result = "SCORE"
             count = 10
-            current_score = 0
+            player.score = 0
         
         screen.blit(background_image, (0, 0))
         clock.tick(60)
@@ -97,24 +104,31 @@ while running:
         for entity in entities:
             entity.draw(screen)
 
-        # Handle ending the game
-        # result = "SCORE"
+        # HUD
+        time_text = font.render(f'Time: {int(count)} sec', True, 0xFFFF)
+        score_text = font.render(f'Score: {player.score}', True, 0xFFFF)
+        curr_c_text = font.render(f'Currently carrying: ', True, 0xFFFF)
+
+        screen.blit(time_text, title_pos)
+        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 20))
+        screen.blit(curr_c_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
+        pygame.draw.rect(screen, 0xFFFF, pygame.Rect(FLOOR_MIN_X + 200, FLOOR_MIN_Y + 40, 30, 30))
 
     if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
-            customer_1 = Customer("cat", Vec2d(50, 520))
+            customer_1 = Customer(ingredients[random.randint(0,4)], player, Vec2d(50, 520))
             entities.append(customer_1)
         elif customer_2 not in entities:
-            customer_2 = Customer("cat", Vec2d(200, 520))
+            customer_2 = Customer(ingredients[random.randint(0,4)], player, Vec2d(200, 520))
             entities.append(customer_2)
         elif customer_3 not in entities:
-            customer_3 = Customer("cat", Vec2d(350, 520))
+            customer_3 = Customer(ingredients[random.randint(0,4)], player, Vec2d(350, 520))
             entities.append(customer_3)
         elif customer_4 not in entities:
-            customer_4 = Customer("cat", Vec2d(500, 520))
+            customer_4 = Customer(ingredients[random.randint(0,4)], player, Vec2d(500, 520))
             entities.append(customer_4)
         elif customer_5 not in entities:
-            customer_5 = Customer("cat", Vec2d(640, 520))
+            customer_5 = Customer(ingredients[random.randint(0,4)], player, Vec2d(640, 520))
             entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)

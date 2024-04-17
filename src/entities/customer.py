@@ -7,6 +7,7 @@ from src.constants import *
 from src.util.vec2d import *
 
 
+
 class CState(Enum):
     WAITING_FOR_FOOD = 1
     EATING = 2
@@ -39,6 +40,7 @@ class Customer(Entity):
     def __init__(
         self,
         order: str,
+        player,
         pos: Vec2d = Vec2d(0, 0),
     ):
         super().__init__(Rect(pos.x, pos.y, CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y), pos)
@@ -47,6 +49,7 @@ class Customer(Entity):
         self.state = CState.WAITING_FOR_FOOD
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
+        self.player = player
 
     def draw(self, screen):
         screen.blit(CUSTOMER_SPRITE, self.hitbox.topleft)
@@ -103,7 +106,11 @@ class Customer(Entity):
 
     def leave(self, angry: bool):
         self.state = CState.LEAVING
-
+        if angry == True:
+            self.player.score -= 1
+        else:
+            self.player.score += 1
+        
         self.cur_timeout = 0
         self.cur_timer = 0
 

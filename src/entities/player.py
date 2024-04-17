@@ -32,6 +32,7 @@ class Player(Entity):
         self.speed = 5
         self.hitbox = Rect(pos.x, pos.y, TILE_SIZE, TILE_SIZE)
         self.sprite = pygame.image.load(sprite_path)
+        self.score = 0
         # orders retrieved from the kitchen
         self.food_retrieved = None
         super().__init__(self.hitbox, pos)
