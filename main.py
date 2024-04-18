@@ -69,6 +69,10 @@ customer_5 = Customer(getRandomIngredient(), player, SEAT_5)
 
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
 
+# Deciding if a customer should be spawned this tick
+def shouldSpawnCustomer():
+    return random.randint(0, 1000) > 997
+
 # Setting up Game State
 clock = pygame.time.Clock()
 running = True
@@ -117,7 +121,7 @@ while running:
         screen.blit(time_text, title_pos)
         screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
 
-    if random.randint(0, 1000) > 997:
+    if shouldSpawnCustomer():
         if customer_1 not in entities:
             customer_1 = Customer(getRandomIngredient(), player, SEAT_1)
             entities.append(customer_1)

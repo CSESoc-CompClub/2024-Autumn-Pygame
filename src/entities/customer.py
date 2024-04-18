@@ -97,7 +97,7 @@ class Customer(Entity):
             self.player.score -= 1
         else:
             self.player.score += 1
-        
+
         self.cur_timeout = 0
         self.cur_timer = 0
 
