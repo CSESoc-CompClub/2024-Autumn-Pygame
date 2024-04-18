@@ -1,6 +1,15 @@
 # 2024-Autumn-Pygame
 2024 (Autumn) Pygame workshop SOLUTION and SPEC, blanks will go on a new branch later on
 
+## Setup for kids
+1. Install python extension
+<img width="303" alt="Screenshot 2024-04-18 at 4 56 50 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/a6cfe1c5-cd5c-4751-84d2-190b0906b271">
+<img width="301" alt="Screenshot 2024-04-18 at 5 00 16 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/476ce84a-feb5-4276-8e4e-16c7f4cf7522">
+
+2. Press play on main.py!
+<img width="1277" alt="Screenshot 2024-04-18 at 5 03 08 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/834baa2d-d7b8-4a64-9c39-138f8302e9cd">
+
+
 ## Setup
 You need to make sure you have `python3` and `pygame` installed.
 
