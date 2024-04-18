@@ -44,9 +44,9 @@ class Customer(Entity):
         self,
         order: str,
         player,
-        pos: Vec2d = Vec2d(0, 0),
+        pos: Vec2d,
     ):
-        super().__init__(Rect(pos.x, pos.y, CUSTOMER_HITBOX_SIZE.x, CUSTOMER_HITBOX_SIZE.y), pos)
+        super().__init__(pos)
         self.order = order
         self.angry = False
         self.state = CState.WAITING_FOR_FOOD
@@ -55,34 +55,14 @@ class Customer(Entity):
         self.player = player
 
     def draw(self, screen):
-        screen.blit(CUSTOMER_SPRITE, self.hitbox.topleft)
+        screen.blit(CUSTOMER_SPRITE, self.pos)
 
         # place status icon
-        statex, statey = self.hitbox.topleft
+        statex, statey = self.pos
         if self.state == CState.EATING:
             screen.blit(EATING_SPRITE, (statex - 20, statey - 20))
         else:
             screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
-            
-
-        # place waiting bar
-        # if self.state == CState.WAITING_FOR_FOOD:
-        #     # 3 thresholds means for distinct progress bars
-        #     bar: Surface = None
-
-        #     if self.cur_timer < self.cur_timeout / 4:
-        #         bar = PROGRESS_BAR_4
-        #     elif self.cur_timer < 2 * self.cur_timeout / 4:
-        #         bar = PROGRESS_BAR_3
-        #     elif self.cur_timer < 3 * self.cur_timeout / 4:
-        #         bar = PROGRESS_BAR_2
-        #     else:
-        #         bar = PROGRESS_BAR_1
-
-        #     statusx, statusy = status_icon_rect.midtop
-        #     statusy -= 10
-
-        #     screen.blit(bar, bar.get_rect(midbottom=(statusx, statusy)))
 
     def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:

@@ -35,7 +35,7 @@ class Player(Entity):
         self.score = 0
         # orders retrieved from the kitchen
         self.food_retrieved = None
-        super().__init__(self.hitbox, pos)
+        super().__init__(pos)
 
     # Set position and clamp within screen size
     def update(self, state):

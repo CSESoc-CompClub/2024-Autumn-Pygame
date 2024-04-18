@@ -15,7 +15,7 @@ INGREDIENTS = {
 
 class Ingredient(Entity):
     def __init__(self, pos, sprite: str, name: str):
-        super().__init__(None, pos)
+        super().__init__(pos)
         self.name = name
         self.sprite = sprite
 
