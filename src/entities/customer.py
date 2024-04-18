@@ -7,13 +7,10 @@ from src.entities.entity import *
 from src.constants import *
 from src.util.vec2d import *
 
-
-
 class CState(Enum):
     WAITING_FOR_FOOD = 1
     EATING = 2
     LEAVING = 3
-
 
 CUSTOMER_STATES: Dict[CState, Surface] = {
     CState.WAITING_FOR_FOOD: pygame.image.load("./sprites/temp/temp_item_tile.png"),
@@ -23,13 +20,6 @@ CUSTOMER_STATES: Dict[CState, Surface] = {
 
 CUSTOMER_SPRITE: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
 EATING_SPRITE: Surface = pygame.transform.scale(pygame.image.load("./sprites/eating.png"), (120, 120))
-
-
-# 4 is most calm, 1 is almost angry
-PROGRESS_BAR_4: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-PROGRESS_BAR_3: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-PROGRESS_BAR_2: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-PROGRESS_BAR_1: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
 
 CUSTOMER_HITBOX_SIZE: Vec2d = Vec2d(TILE_SIZE / 2, TILE_SIZE)
 
@@ -56,7 +46,7 @@ class Customer(Entity):
 
     def draw(self, screen):
         screen.blit(CUSTOMER_SPRITE, self.hitbox.topleft)
-
+        
         # place status icon
         statex, statey = self.hitbox.topleft
         if self.state == CState.EATING:
@@ -64,25 +54,6 @@ class Customer(Entity):
         else:
             screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
             
-
-        # place waiting bar
-        # if self.state == CState.WAITING_FOR_FOOD:
-        #     # 3 thresholds means for distinct progress bars
-        #     bar: Surface = None
-
-        #     if self.cur_timer < self.cur_timeout / 4:
-        #         bar = PROGRESS_BAR_4
-        #     elif self.cur_timer < 2 * self.cur_timeout / 4:
-        #         bar = PROGRESS_BAR_3
-        #     elif self.cur_timer < 3 * self.cur_timeout / 4:
-        #         bar = PROGRESS_BAR_2
-        #     else:
-        #         bar = PROGRESS_BAR_1
-
-        #     statusx, statusy = status_icon_rect.midtop
-        #     statusy -= 10
-
-        #     screen.blit(bar, bar.get_rect(midbottom=(statusx, statusy)))
 
     def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:
@@ -101,13 +72,11 @@ class Customer(Entity):
 
     def receive_order(self):
         self.state = CState.WAITING_FOR_FOOD
-
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.cur_timer = 0
 
     def start_eating(self):
         self.state = CState.EATING
-
         self.cur_timeout = EATING_TIMEOUT
         self.cur_timer = 0
 

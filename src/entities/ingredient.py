@@ -1,16 +1,21 @@
 from src.entities.entity import Entity
 from src.util.vec2d import *
+from src.constants import *
 import pygame
 
+SPRITE_SIZE = (TILE_SIZE, TILE_SIZE)
 
 INGREDIENTS = {
-    "watermelon": pygame.transform.scale(pygame.image.load("./sprites/watermelon.png"), (120, 120)),
-    "sushi": pygame.transform.scale(pygame.image.load("./sprites/sushi.png"), (120, 120)),
-    "peach": pygame.transform.scale(pygame.image.load("./sprites/peach.png"), (120, 120)),
-    "banana": pygame.transform.scale(pygame.image.load("./sprites/banana.png"), (120, 120)),
-    "grapes": pygame.transform.scale(pygame.image.load("./sprites/grapes.png"), (120, 120)),
-    "strawberry": pygame.transform.scale(pygame.image.load("./sprites/strawberry.png"), (120, 120))
+    "watermelon": pygame.transform.scale(pygame.image.load("./sprites/watermelon.png"), SPRITE_SIZE),
+    "sushi": pygame.transform.scale(pygame.image.load("./sprites/sushi.png"), SPRITE_SIZE),
+    "peach": pygame.transform.scale(pygame.image.load("./sprites/peach.png"), SPRITE_SIZE),
+    "banana": pygame.transform.scale(pygame.image.load("./sprites/banana.png"), SPRITE_SIZE),
+    "grapes": pygame.transform.scale(pygame.image.load("./sprites/grapes.png"), SPRITE_SIZE),
+    "strawberry": pygame.transform.scale(pygame.image.load("./sprites/strawberry.png"), SPRITE_SIZE)
 }
+
+def num_food() -> int: 
+    return len(INGREDIENTS) - 1
 
 
 class Ingredient(Entity):
