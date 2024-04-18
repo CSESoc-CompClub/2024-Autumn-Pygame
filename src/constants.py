@@ -1,4 +1,7 @@
 # Dimensions
+from src.util.vec2d import Vec2d
+
+
 TILE_SIZE = 64
 GRID_SIZE_X = 14
 GRID_SIZE_Y = 10
@@ -21,4 +24,11 @@ WHITE = (245, 217, 171, 1)
 YELLOW = (234,175,55,255)
 BURGUNDY = (144,8,5,255)
 RED_BLACK = (111, 5, 1)
+
+# Seats
+SEAT_1 = Vec2d(50, 520)
+SEAT_2 = Vec2d(200, 520)
+SEAT_3 = Vec2d(350, 520)
+SEAT_4 = Vec2d(500, 520)
+SEAT_5 = Vec2d(640, 520)
 

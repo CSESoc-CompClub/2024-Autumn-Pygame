@@ -56,13 +56,16 @@ entities.append(Ingredient(Vec2d(450, 0), INGREDIENTS["banana"], "banana"))
 entities.append(Ingredient(Vec2d(580, 0), INGREDIENTS["grapes"], "grapes"))
 entities.append(Ingredient(Vec2d(720, 0), INGREDIENTS["strawberry"], "strawberry"))
 
+# Return a random ingredient
+def getRandomIngredient():
+    return ingredients[random.randint(0, 5)]
 
 # Adding customers
-customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
-customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
-customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
-customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
-customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
+customer_1 = Customer(getRandomIngredient(), player, SEAT_1)
+customer_2 = Customer(getRandomIngredient(), player, SEAT_2)
+customer_3 = Customer(getRandomIngredient(), player, SEAT_3)
+customer_4 = Customer(getRandomIngredient(), player, SEAT_4)
+customer_5 = Customer(getRandomIngredient(), player, SEAT_5)
 
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
 
@@ -116,19 +119,19 @@ while running:
 
     if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
-            customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
+            customer_1 = Customer(getRandomIngredient(), player, SEAT_1)
             entities.append(customer_1)
         elif customer_2 not in entities:
-            customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
+            customer_2 = Customer(getRandomIngredient(), player, SEAT_2)
             entities.append(customer_2)
         elif customer_3 not in entities:
-            customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
+            customer_3 = Customer(getRandomIngredient(), player, SEAT_3)
             entities.append(customer_3)
         elif customer_4 not in entities:
-            customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
+            customer_4 = Customer(getRandomIngredient(), player, SEAT_4)
             entities.append(customer_4)
         elif customer_5 not in entities:
-            customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
+            customer_5 = Customer(getRandomIngredient(), player, SEAT_5)
             entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)

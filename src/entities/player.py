@@ -61,12 +61,12 @@ class Player(Entity):
     def interact_nearest(self, entities):
         nearest_entity = get_nearest_entity(self, entities)
         if type(nearest_entity) is Ingredient:
-            self.food_retrieved = nearest_entity
+            self.food_retrieved = nearest_entity.name
         elif type(nearest_entity) is Customer and self.food_retrieved:
-            nearest_entity.interact(self.food_retrieved.name)
+            nearest_entity.interact(self.food_retrieved)
             self.food_retrieved = None
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)
         if self.food_retrieved is not None:
-            screen.blit(INGREDIENTS[self.food_retrieved.name], self.hitbox.topleft)
+            screen.blit(INGREDIENTS[self.food_retrieved], self.hitbox.topleft)
