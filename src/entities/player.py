@@ -52,20 +52,8 @@ class Player(Entity):
         speed_cap = 0.7 if pos.x != 0 and pos.y != 0 else 1
 
         self.hitbox.topleft = (
-            max(
-                min(
-                    (self.hitbox.x + pos.x * self.speed * speed_cap),
-                    (MAX_X),
-                ),
-                MIN_X,
-            ),
-            max(
-                min(
-                    (self.hitbox.y + pos.y * self.speed * speed_cap),
-                    (MAX_Y),
-                ),
-                MIN_Y,
-            ),
+            max(min(self.hitbox.x + pos.x * self.speed * speed_cap, MAX_X), MIN_X),
+            max(min(self.hitbox.y + pos.y * self.speed * speed_cap, MAX_Y), MIN_Y)
         )
 
         self.pos = self.hitbox.topleft

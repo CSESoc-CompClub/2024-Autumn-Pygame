@@ -99,7 +99,7 @@ while running:
         if count < 0:
             result = "SCORE"
             count = 60
-        
+
         screen.blit(background_image, (0, 0))
         clock.tick(60)
 
@@ -112,7 +112,7 @@ while running:
         score_text = font.render(f'Score: {player.score}', True, WHITE)
 
         screen.blit(time_text, title_pos)
-        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 20))
+        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
 
     if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
