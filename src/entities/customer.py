@@ -1,4 +1,5 @@
 import copy
+import random
 from enum import *
 from typing import *
 from pygame import *
@@ -18,7 +19,14 @@ CUSTOMER_STATES: Dict[CState, Surface] = {
     CState.LEAVING: pygame.image.load("./sprites/temp/temp_item_tile.png"),
 }
 
-CUSTOMER_SPRITE: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
+CUSTOMER_SIZE = (100, 100)
+ANIMALS = {
+    1: pygame.transform.scale(pygame.image.load("./sprites/animal1.png"), CUSTOMER_SIZE),
+    2: pygame.transform.scale(pygame.image.load("./sprites/animal2.png"), CUSTOMER_SIZE),
+    3: pygame.transform.scale(pygame.image.load("./sprites/animal3.png"), CUSTOMER_SIZE),
+    4: pygame.transform.scale(pygame.image.load("./sprites/animal4.png"), CUSTOMER_SIZE),
+}
+
 EATING_SPRITE: Surface = pygame.transform.scale(pygame.image.load("./sprites/eating.png"), (120, 120))
 
 CUSTOMER_HITBOX_SIZE: Vec2d = Vec2d(TILE_SIZE / 2, TILE_SIZE)
@@ -43,17 +51,17 @@ class Customer(Entity):
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.player = player
+        self.animal_type: Surface = ANIMALS[random.randint(1, 4)]
 
     def draw(self, screen):
-        screen.blit(CUSTOMER_SPRITE, self.hitbox.topleft)
+        screen.blit(self.animal_type, self.hitbox.topleft)
         
         # place status icon
         statex, statey = self.hitbox.topleft
         if self.state == CState.EATING:
-            screen.blit(EATING_SPRITE, (statex - 20, statey - 20))
+            screen.blit(EATING_SPRITE, (statex - 75, statey - 50))
         else:
-            screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
-            
+            screen.blit(INGREDIENTS[self.order], (statex - 50, statey - 25))
 
     def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:

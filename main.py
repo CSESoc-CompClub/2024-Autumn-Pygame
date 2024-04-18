@@ -65,12 +65,12 @@ entities.append(player)
 
 # Adding Ingredients
 ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
-entities.append(Ingredient(Vec2d(60, 0), INGREDIENTS["watermelon"], "watermelon"))
-entities.append(Ingredient(Vec2d(190, 0), INGREDIENTS["sushi"], "sushi"))
-entities.append(Ingredient(Vec2d(320, 0), INGREDIENTS["peach"], "peach"))
-entities.append(Ingredient(Vec2d(450, 0), INGREDIENTS["banana"], "banana"))
-entities.append(Ingredient(Vec2d(580, 0), INGREDIENTS["grapes"], "grapes"))
-entities.append(Ingredient(Vec2d(720, 0), INGREDIENTS["strawberry"], "strawberry"))
+entities.append(Ingredient(Vec2d(88, 30), INGREDIENTS["strawberry"], "strawberry"))
+entities.append(Ingredient(Vec2d(218, 30), INGREDIENTS["sushi"], "sushi"))
+entities.append(Ingredient(Vec2d(348, 30), INGREDIENTS["peach"], "peach"))
+entities.append(Ingredient(Vec2d(478, 30), INGREDIENTS["banana"], "banana"))
+entities.append(Ingredient(Vec2d(608, 30), INGREDIENTS["grapes"], "grapes"))
+entities.append(Ingredient(Vec2d(738, 30), INGREDIENTS["watermelon"], "watermelon"))
 
 # Adding customers
 customer_1 = Customer(ingredients[random.randint(0, num_food())], player, Vec2d(CUST1_POS))
