@@ -5,6 +5,7 @@
 1. Install python vscode extension
 <img width="303" alt="Screenshot 2024-04-18 at 4 56 50 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/feb30da6-d7aa-4279-bca8-f7244262a1e2">
 <img width="301" alt="Screenshot 2024-04-18 at 5 00 16 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/73ed6dd0-b17b-45f6-8807-d64743b61132">
+
 2. Hit play!
 <img width="1277" alt="Screenshot 2024-04-18 at 5 03 08 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/8a3662f2-654a-4233-a6d6-b659c00f2c1c">
 
