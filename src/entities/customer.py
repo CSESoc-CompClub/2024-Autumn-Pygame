@@ -101,13 +101,10 @@ class Customer(Entity):
 
     def interact(self, food_retrieved):
         if self.state is CState.WAITING_FOR_FOOD:
-            return self.try_receive_order(food_retrieved)
-        return False
+            self.try_receive_order(food_retrieved)
 
     def try_receive_order(self, food_retrieved) -> bool:
         if self.order == food_retrieved:
             self.start_eating()
-            return True
         else:
             self.leave(True)
-            return False
