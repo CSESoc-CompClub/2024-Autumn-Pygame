@@ -51,10 +51,10 @@ class Customer(Entity):
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.player = player
-        self.animal_type: Surface = ANIMALS[random.randint(1, 4)]
+        self.sprite: Surface = ANIMALS[random.randint(1, 4)]
 
     def draw(self, screen):
-        screen.blit(self.animal_type, self.pos)
+        screen.blit(self.sprite, self.pos)
 
         # place status icon
         statex, statey = self.pos
