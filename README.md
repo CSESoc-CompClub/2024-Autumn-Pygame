@@ -51,7 +51,7 @@ The `draw` method draws the following onto the screen:
 ### [Task 2.2] Start Eating!:
 The `start_eating` method updates the customer's state to `EATING`, resets `cur_timer`, and sets the timeout to `EATING_TIMEOUT`:
 
-**Fill in the `start_order` method in `customer.py`.**.
+**Fill in the `start_eating` method in `customer.py`.**.
 
 ### [Task 2.2] Leaving!:
 The `leave` method updates the customer's state to `LEAVING` and updates the players score. If the customer leaves angry, then decrease the score by 1, else increase it by 1.
