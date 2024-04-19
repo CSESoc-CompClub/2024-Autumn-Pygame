@@ -51,65 +51,32 @@ class Customer(Entity):
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.player = player
-        self.animal_type: Surface = ANIMALS[random.randint(1, 4)]
+        self.sprite: Surface = ANIMALS[random.randint(1, 4)]
 
     def draw(self, screen):
-        screen.blit(self.animal_type, self.pos)
-
-        # place status icon
-        statex, statey = self.pos
-        if self.state == CState.EATING:
-            screen.blit(EATING_SPRITE, (statex - 75, statey - 50))
-        else:
-            screen.blit(INGREDIENTS[self.order], (statex - 50, statey - 25))
+        # TODO: Write your code here
+        pass
 
     def update(self, entities: list[Entity]):
-        if self.state == CState.WAITING_FOR_FOOD:
-            self.cur_timer += 1
-            if self.cur_timer >= self.cur_timeout:
-                self.angry = True
-                self.leave(True)
-
-        elif self.state == CState.EATING:
-            self.cur_timer += 1
-            if self.cur_timer >= self.cur_timeout:
-                self.leave(False)
-
-        elif self.state == CState.LEAVING:
-            self.destroy(entities)
-
-    def receive_order(self):
-        self.state = CState.WAITING_FOR_FOOD
-        self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
-        self.cur_timer = 0
+        # TODO: Write your code here
+        pass
 
     def start_eating(self):
-        self.state = CState.EATING
-        self.cur_timeout = EATING_TIMEOUT
-        self.cur_timer = 0
+        # TODO: Write your code here
+        pass
 
     def leave(self, angry: bool):
-        self.state = CState.LEAVING
-        if angry == True:
-            self.player.score -= 1
-        else:
-            self.player.score += 1
-
-        self.cur_timeout = 0
-        self.cur_timer = 0
+        # TODO: Write your code here
+        pass
 
     def destroy(self, entities: list[Entity]):
-        entities.remove(self)
+        # TODO: Write your code here
+        pass
 
     def interact(self, food_retrieved):
-        if self.state is CState.WAITING_FOR_FOOD:
-            return self.try_receive_order(food_retrieved)
-        return False
+        # TODO: Write your code here
+        pass
 
     def try_receive_order(self, food_retrieved) -> bool:
-        if self.order == food_retrieved:
-            self.start_eating()
-            return True
-        else:
-            self.leave(True)
-            return False
+        # TODO: Write your code here
+        pass

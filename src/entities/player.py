@@ -6,25 +6,16 @@ from src.util.vec2d import Vec2d
 from src.entities.customer import *
 from src.entities.ingredient import Ingredient
 
-
+# TODO: return the distance between two entities
+# HINT -> use entity.pos
 def get_entities_distance(entity1: Entity, entity2: Entity):
-    pos1 = entity1.get_position()
-    pos2 = entity2.get_position()
+    pass
 
-    # use vec2d function supplied
-    return pos1.get_distance(pos2)
-
-
-def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
-    nearest_entity = entities[0]
-    nearest_distance = 12031239
-    for e in entities:
-        if e != entity:
-            distance = get_entities_distance(entity, e)
-            if distance < nearest_distance:
-                nearest_entity = e
-                nearest_distance = distance
-    return nearest_entity
+# TODO: return the nearest entity between
+# HINT: -> use `get_entities_distance(...)`
+# HINT: -> make sure that the entities you are comparing are not the same
+def get_nearest_entity(player: Entity, entities: list[Entity]) -> Entity:
+    return player
 
 
 class Player(Entity):
@@ -37,12 +28,8 @@ class Player(Entity):
         self.food_retrieved = None
         super().__init__(pos)
 
-    # Set position and clamp within screen size
     def update(self, state):
-        self.move()
-        keys = pygame.key.get_pressed()
-        if keys[K_SPACE]:
-            self.interact_nearest(state)
+        pass
 
     def move(self):
         keys = pygame.key.get_pressed()
@@ -59,14 +46,7 @@ class Player(Entity):
         self.pos = self.hitbox.topleft
 
     def interact_nearest(self, entities):
-        nearest_entity = get_nearest_entity(self, entities)
-        if type(nearest_entity) is Ingredient:
-            self.food_retrieved = nearest_entity.name
-        elif type(nearest_entity) is Customer and self.food_retrieved:
-            nearest_entity.interact(self.food_retrieved)
-            self.food_retrieved = None
+        pass
 
     def draw(self, screen: pygame.Surface):
-        screen.blit(self.sprite, self.hitbox.topleft)
-        if self.food_retrieved is not None:
-            screen.blit(INGREDIENTS[self.food_retrieved], self.hitbox.topleft)
+        pass

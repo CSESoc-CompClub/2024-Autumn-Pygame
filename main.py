@@ -72,9 +72,17 @@ entities.append(Ingredient(FRUIT4_POS, INGREDIENTS["banana"], "banana"))
 entities.append(Ingredient(FRUIT5_POS, INGREDIENTS["grapes"], "grapes"))
 entities.append(Ingredient(FRUIT6_POS, INGREDIENTS["watermelon"], "watermelon"))
 
-# Return a random ingredient
+
+##############################################################################
+# TODO: Return a random ingredient from ingredient list ######################
+##############################################################################
 def getRandomIngredient():
-    return ingredients[random.randint(0, 5)]
+    """Return a random ingredient from ingredient list
+    Returns:
+        _type_: string representing the ingredient
+    """
+    # TODO: Write your code here!
+    return ingredients[0]
 
 # Adding customers
 customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
