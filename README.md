@@ -185,3 +185,5 @@ The `update` method on the `Player` class is called 60 times every second (or on
 > - use `self.move`
 > - access the pressed down keys using `pygame.key.get_pressed()`
 > - the index for the space key is `K_SPACE`
+
+## CONGRATS!!! You've built your first working pygame! 🎉
