@@ -54,8 +54,8 @@ class Customer(Entity):
         self.animal_type: Surface = ANIMALS[random.randint(1, 4)]
 
     def draw(self, screen):
-        screen.blit(self.animal_type, self.hitbox.topleft)
-        
+        screen.blit(self.animal_type, self.pos)
+
         # place status icon
         statex, statey = self.pos
         if self.state == CState.EATING:

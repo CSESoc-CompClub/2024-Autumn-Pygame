@@ -65,24 +65,30 @@ entities.append(player)
 
 # Adding Ingredients
 ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
-entities.append(Ingredient(Vec2d(60, 0), INGREDIENTS["watermelon"], "watermelon"))
-entities.append(Ingredient(Vec2d(190, 0), INGREDIENTS["sushi"], "sushi"))
-entities.append(Ingredient(Vec2d(320, 0), INGREDIENTS["peach"], "peach"))
-entities.append(Ingredient(Vec2d(450, 0), INGREDIENTS["banana"], "banana"))
-entities.append(Ingredient(Vec2d(580, 0), INGREDIENTS["grapes"], "grapes"))
-entities.append(Ingredient(Vec2d(720, 0), INGREDIENTS["strawberry"], "strawberry"))
+entities.append(Ingredient(FRUIT1_POS, INGREDIENTS["strawberry"], "strawberry"))
+entities.append(Ingredient(FRUIT2_POS, INGREDIENTS["sushi"], "sushi"))
+entities.append(Ingredient(FRUIT3_POS, INGREDIENTS["peach"], "peach"))
+entities.append(Ingredient(FRUIT4_POS, INGREDIENTS["banana"], "banana"))
+entities.append(Ingredient(FRUIT5_POS, INGREDIENTS["grapes"], "grapes"))
+entities.append(Ingredient(FRUIT6_POS, INGREDIENTS["watermelon"], "watermelon"))
 
+# Return a random ingredient
+def getRandomIngredient():
+    return ingredients[random.randint(0, 5)]
 
 # Adding customers
-customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
-customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
-customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
-customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
-customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
-
+customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
+customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
+customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
+customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
+customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
 
-# Setting up Game State
+# Deciding if a customer should be spawned this tick
+def shouldSpawnCustomer():
+    return random.randint(0, 1000) > 997
+
+# The initial state of our game
 clock = pygame.time.Clock()
 running = True
 time_left = 60
@@ -134,21 +140,22 @@ while running:
         screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
         screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
 
+    # Also don't do this
     if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
-            customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
+            customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
             entities.append(customer_1)
         elif customer_2 not in entities:
-            customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
+            customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
             entities.append(customer_2)
         elif customer_3 not in entities:
-            customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
+            customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
             entities.append(customer_3)
         elif customer_4 not in entities:
-            customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
+            customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
             entities.append(customer_4)
         elif customer_5 not in entities:
-            customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
+            customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
             entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)
