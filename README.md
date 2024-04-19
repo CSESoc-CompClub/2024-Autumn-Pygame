@@ -56,11 +56,11 @@ The `start_eating` method updates the customer's state to `EATING`, resets `cur_
 ### [Task 2.2] Leaving!:
 The `leave` method updates the customer's state to `LEAVING` and updates the players score. If the customer leaves angry, then decrease the score by 1, else increase it by 1.
 
+**Fill in the `leave` method in `customer.py`.**.
+
 > HINTS
 > -
 > - use `self.player.score` to update the players score
-
-**Fill in the `leave` method in `customer.py`.**.
 
 ### [Task 2.3] Destroy 💔!:
 The `destroy` method removes the customer from the `entities` list.
