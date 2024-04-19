@@ -46,7 +46,6 @@ class Customer(Entity):
     ):
         super().__init__(pos)
         self.order = order
-        self.angry = False
         self.state = CState.WAITING_FOR_FOOD
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
@@ -67,7 +66,6 @@ class Customer(Entity):
         if self.state == CState.WAITING_FOR_FOOD:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
-                self.angry = True
                 self.leave(True)
 
         elif self.state == CState.EATING:
