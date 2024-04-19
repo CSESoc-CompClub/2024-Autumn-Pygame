@@ -1,4 +1,5 @@
 import copy
+import random
 from enum import *
 from typing import *
 from pygame import *
@@ -7,13 +8,10 @@ from src.entities.entity import *
 from src.constants import *
 from src.util.vec2d import *
 
-
-
 class CState(Enum):
     WAITING_FOR_FOOD = 1
     EATING = 2
     LEAVING = 3
-
 
 CUSTOMER_STATES: Dict[CState, Surface] = {
     CState.WAITING_FOR_FOOD: pygame.image.load("./sprites/temp/temp_item_tile.png"),
@@ -21,15 +19,15 @@ CUSTOMER_STATES: Dict[CState, Surface] = {
     CState.LEAVING: pygame.image.load("./sprites/temp/temp_item_tile.png"),
 }
 
-CUSTOMER_SPRITE: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
+CUSTOMER_SIZE = (100, 100)
+ANIMALS = {
+    1: pygame.transform.scale(pygame.image.load("./sprites/animal1.png"), CUSTOMER_SIZE),
+    2: pygame.transform.scale(pygame.image.load("./sprites/animal2.png"), CUSTOMER_SIZE),
+    3: pygame.transform.scale(pygame.image.load("./sprites/animal3.png"), CUSTOMER_SIZE),
+    4: pygame.transform.scale(pygame.image.load("./sprites/animal4.png"), CUSTOMER_SIZE),
+}
+
 EATING_SPRITE: Surface = pygame.transform.scale(pygame.image.load("./sprites/eating.png"), (120, 120))
-
-
-# 4 is most calm, 1 is almost angry
-PROGRESS_BAR_4: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-PROGRESS_BAR_3: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-PROGRESS_BAR_2: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
-PROGRESS_BAR_1: Surface = pygame.image.load("./sprites/temp/temp_sprite.png")
 
 CUSTOMER_HITBOX_SIZE: Vec2d = Vec2d(TILE_SIZE / 2, TILE_SIZE)
 
@@ -53,16 +51,17 @@ class Customer(Entity):
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.player = player
+        self.animal_type: Surface = ANIMALS[random.randint(1, 4)]
 
     def draw(self, screen):
-        screen.blit(CUSTOMER_SPRITE, self.pos)
-
+        screen.blit(self.animal_type, self.hitbox.topleft)
+        
         # place status icon
         statex, statey = self.pos
         if self.state == CState.EATING:
-            screen.blit(EATING_SPRITE, (statex - 20, statey - 20))
+            screen.blit(EATING_SPRITE, (statex - 75, statey - 50))
         else:
-            screen.blit(INGREDIENTS[self.order], (statex - 20, statey - 20))
+            screen.blit(INGREDIENTS[self.order], (statex - 50, statey - 25))
 
     def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:
@@ -81,13 +80,11 @@ class Customer(Entity):
 
     def receive_order(self):
         self.state = CState.WAITING_FOR_FOOD
-
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.cur_timer = 0
 
     def start_eating(self):
         self.state = CState.EATING
-
         self.cur_timeout = EATING_TIMEOUT
         self.cur_timer = 0
 

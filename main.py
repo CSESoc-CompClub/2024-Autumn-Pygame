@@ -1,3 +1,9 @@
+##############################################################
+#    CompClub Autumn Introduction to PyGame Workshop! :)     #
+#        This program was written by: <Your-Name-Here>       #
+#                       On: <Date-Here>                      #
+##############################################################
+
 import random
 import pygame
 from src.entities.ingredient import INGREDIENTS
@@ -11,10 +17,15 @@ from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
 from src.util.vec2d import *
+from src.entities.ingredient import num_food
 
-# Initialise pygame ###############################
+
+# #############################################################################
+# ########################## Initialise pygame ################################
+# #############################################################################
 pygame.init()
 
+# [DRAWING THE WINDOW] ########################################################
 # Create the screen
 screen = pygame.display.set_mode(
     (
@@ -41,9 +52,14 @@ background_image = pygame.transform.scale(
     background_image, (screen.get_width(), screen.get_height())
 )
 
+# [PLACING OUR OBJECTS] #######################################################
+# Every object we're storing on the map, such as the:
+# -> Player
+# -> Customers
+# -> Food
 entities = []
 
-# Initialise game state
+# Placing our player
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
@@ -56,36 +72,32 @@ entities.append(Ingredient(Vec2d(450, 0), INGREDIENTS["banana"], "banana"))
 entities.append(Ingredient(Vec2d(580, 0), INGREDIENTS["grapes"], "grapes"))
 entities.append(Ingredient(Vec2d(720, 0), INGREDIENTS["strawberry"], "strawberry"))
 
-# Return a random ingredient
-def getRandomIngredient():
-    return ingredients[random.randint(0, 5)]
 
 # Adding customers
-customer_1 = Customer(getRandomIngredient(), player, SEAT_1)
-customer_2 = Customer(getRandomIngredient(), player, SEAT_2)
-customer_3 = Customer(getRandomIngredient(), player, SEAT_3)
-customer_4 = Customer(getRandomIngredient(), player, SEAT_4)
-customer_5 = Customer(getRandomIngredient(), player, SEAT_5)
+customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
+customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
+customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
+customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
+customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
 
 entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
-
-# Deciding if a customer should be spawned this tick
-def shouldSpawnCustomer():
-    return random.randint(0, 1000) > 997
 
 # Setting up Game State
 clock = pygame.time.Clock()
 running = True
-count = 20
-current_score = 0
+time_left = 60
 current_scene = "MENU"
 
-# HUD Stuff
+# Font for our user interface
 font = pygame.font.SysFont('Palatino', 30)
-title_pos = (FLOOR_MIN_X, FLOOR_MIN_Y)
 
+# #############################################################################
+# ################################ Game Loop ##################################
+# #############################################################################
 
-# Game Loop #####################################
+# Everything is rendered from the top to the bottom, so we start off by drawing
+# the window, then background, our entities, then our user interface (ie the score/timer text)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -94,6 +106,7 @@ while running:
     for entity in entities:
         entity.update(entities)
 
+    # Don't do this
     if current_scene == "MENU":
         result = menu(screen)
     elif current_scene == "CREDIT":
@@ -103,40 +116,41 @@ while running:
         player.score = 0
     elif current_scene == "GAME":
         # Handle time out
-        if count < 0:
+        if time_left < 0:
             result = "SCORE"
-            count = 60
+            time_left = 60
 
         screen.blit(background_image, (0, 0))
         clock.tick(60)
 
-        count -= 1/60
+        time_left -= 1/60
         for entity in entities:
             entity.draw(screen)
 
-        # HUD
-        time_text = font.render(f'Time: {int(count)} sec', True, WHITE)
+        # Display our user interface
+        time_text = font.render(f'Time: {int(time_left)} sec', True, WHITE)
         score_text = font.render(f'Score: {player.score}', True, WHITE)
 
-        screen.blit(time_text, title_pos)
+        screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
         screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
 
-    if shouldSpawnCustomer():
+    if random.randint(0, 1000) > 997:
         if customer_1 not in entities:
-            customer_1 = Customer(getRandomIngredient(), player, SEAT_1)
+            customer_1 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(50, 520))
             entities.append(customer_1)
         elif customer_2 not in entities:
-            customer_2 = Customer(getRandomIngredient(), player, SEAT_2)
+            customer_2 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(200, 520))
             entities.append(customer_2)
         elif customer_3 not in entities:
-            customer_3 = Customer(getRandomIngredient(), player, SEAT_3)
+            customer_3 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(350, 520))
             entities.append(customer_3)
         elif customer_4 not in entities:
-            customer_4 = Customer(getRandomIngredient(), player, SEAT_4)
+            customer_4 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(500, 520))
             entities.append(customer_4)
         elif customer_5 not in entities:
-            customer_5 = Customer(getRandomIngredient(), player, SEAT_5)
+            customer_5 = Customer(ingredients[random.randint(0, 5)], player, Vec2d(640, 520))
             entities.append(customer_5)
 
     current_scene = scene_map[current_scene].get(result, current_scene)
     pygame.display.update()
+
