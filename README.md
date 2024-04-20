@@ -1,6 +1,11 @@
 # 2024-Autumn-Pygame
 2024 (Autumn) Pygame workshop SPEC
 
+## Links
+[Slides](https://go.compclub.org/python)
+
+[Feedback](https://go.compclub.org/feedback-pygame)
+
 ## Setup
 ### 1. Install python extension
 <img width="303" alt="Screenshot 2024-04-18 at 4 56 50 pm" src="https://github.com/CSESoc-CompClub/2024-Autumn-Pygame/assets/96902642/a6cfe1c5-cd5c-4751-84d2-190b0906b271">
