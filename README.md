@@ -2,7 +2,7 @@
 2024 (Autumn) Pygame workshop SPEC
 
 ## Links
-[Slides](https://go.compclub.org/python)
+[Slides](https://go.compclub.org/pygame-slides)
 
 [Feedback](https://go.compclub.org/feedback-pygame)
 
