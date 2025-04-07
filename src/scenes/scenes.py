@@ -3,7 +3,6 @@ import pygame
 from src.constants import *
 from pygame.locals import *
 from src.scenes.menu import menu
-from src.scenes.credit import credit
 from src.scenes.score import score
 from src.entities.entity import *
 from src.entities.customer import *
@@ -17,8 +16,6 @@ font = pygame.font.SysFont('Palatino', 30)
 def handle_scenes(screen, player, entities, background_image, clock, time_left, current_scene):
     if current_scene == "MENU":
         result = menu(screen)
-    elif current_scene == "CREDIT":
-        result = credit(screen)
     elif current_scene == "SCORE":
         result = score(screen, player.score)
         player.score = 0

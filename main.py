@@ -39,9 +39,8 @@ pygame.display.set_icon(pygame.image.load("./sprites/temp/temp_icon.png"))
 
 # Scene transition map
 scene_map = {
-    "MENU": {"GAME": "GAME", "CREDIT": "CREDIT"},
+    "MENU": {"GAME": "GAME"},
     "GAME": {"SCORE": "SCORE"},
-    "CREDIT": {"MENU": "MENU"},
     "SCORE": {"GAME": "GAME", "MENU": "MENU"},
 }
 
