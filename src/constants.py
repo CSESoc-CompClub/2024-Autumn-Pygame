@@ -65,6 +65,10 @@ WAITING_TO_ORDER_TIMEOUT: int = 8000  # 8 seconds
 WAITING_FOR_FOOD_TIMEOUT: int = 8000  # 8 seconds
 EATING_TIMEOUT: int = 240  # 5  mseconds
 
+DEFAULT_PLAYER_SPEED = 5
+NORMALISED_SPEED_CAP = 0.7  # ~ sqrt(2)/2
+AXIS_SPEED_CAP = 1
+
 # Sprites
 ANIMAL_LABEL_START = 1      # ./sprites/animal{START..STOP}.png
 ANIMAL_LABEL_STOP = 4

@@ -17,7 +17,7 @@ def get_entities_distance(entity1: Entity, entity2: Entity):
 
 def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
     nearest_entity = entities[0]
-    nearest_distance = 12031239
+    nearest_distance = math.inf
     for e in entities:
         if e != entity:
             distance = get_entities_distance(entity, e)
@@ -29,7 +29,7 @@ def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
 
 class Player(Entity):
     def __init__(self, pos: Vec2d, sprite_path: str):
-        self.speed = 5
+        self.speed = DEFAULT_PLAYER_SPEED
         self.hitbox = Rect(pos.x, pos.y, TILE_SIZE, TILE_SIZE)
         self.sprite = pygame.image.load(sprite_path)
         self.score = 0
@@ -49,7 +49,7 @@ class Player(Entity):
         pos = Vec2d(keys[K_d] - keys[K_a], keys[K_s] - keys[K_w])
 
         # stop doubled speed when moving diagonally (~ sqrt(2)/2)
-        speed_cap = 0.7 if pos.x != 0 and pos.y != 0 else 1
+        speed_cap = NORMALISED_SPEED_CAP if pos.x != 0 and pos.y != 0 else AXIS_SPEED_CAP
 
         self.hitbox.topleft = (
             max(min(self.hitbox.x + pos.x * self.speed * speed_cap, MAX_X), MIN_X),
