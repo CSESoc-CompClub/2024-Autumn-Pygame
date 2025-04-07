@@ -6,19 +6,16 @@
 
 import random
 import pygame
-from src.entities.ingredient import INGREDIENTS
+from src.entities.ingredient import INGREDIENTS, num_food
 from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
-from src.scenes.menu import menu
-from src.scenes.credit import credit
-from src.scenes.score import score
 from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
 from src.util.vec2d import *
-from src.entities.ingredient import num_food
 from src.scenes.scenes import handle_scenes
+from src.entities.respawn_customer import respawn_customer
 
 
 
@@ -66,14 +63,14 @@ player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_spri
 entities.append(player)
 
 # Adding Ingredients
-ingredients = ["strawberry", "sushi", "peach", "banana", "grapes", "watermelon"]
+ingredients = list(INGREDIENTS.keys())
 fruit_pos = [FRUIT1_POS, FRUIT2_POS, FRUIT3_POS, FRUIT4_POS, FRUIT5_POS, FRUIT6_POS]
 for i in range(0, num_food()):
     entities.append(Ingredient(fruit_pos[i], INGREDIENTS[ingredients[i]], ingredients[i]))
 
 # Return a random ingredient
 def getRandomIngredient():
-    return ingredients[random.randint(0, 5)]
+    return ingredients[random.randint(0, num_food() - 1)]
 
 # Adding customers
 customer_pos = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
@@ -81,11 +78,8 @@ customers = []
 for position in customer_pos:
     customer = Customer(getRandomIngredient(), player, Vec2d(position))
     customers.append(customer)
-    entities += [customer]
-
-# Deciding if a customer should be spawned this tick
-def shouldSpawnCustomer():
-    return random.randint(0, 1000) > 997
+    # entities += [customer]
+    entities.append(customer)
 
 # The initial state of our game
 clock = pygame.time.Clock()
@@ -109,18 +103,11 @@ while running:
     for entity in entities:
         entity.update(entities)
 
-    # Spawning more customers if they left
-    if shouldSpawnCustomer():
-        for i, customer in enumerate(customers):
-            if customer not in entities:
-                customer = Customer(getRandomIngredient(), player, Vec2d(customer_pos[i]))
-                customers[i] = customer
-                entities.append(customer)
-                break
+    # Respawn customers
+    respawn_customer(customers, customer_pos, entities, player)
 
     # Handle scene logic
-    current_scene, time_left = handle_scenes(screen, player, entities, 
-                                             background_image, clock, time_left, 
-                                             current_scene)
+    current_scene, time_left = handle_scenes(screen, player, entities, background_image, 
+                                             clock, time_left, current_scene)
     pygame.display.update()
 
