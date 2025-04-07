@@ -60,7 +60,7 @@ background_image = pygame.transform.scale(
 entities = []
 
 # Placing our player
-player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
+player = Player(Vec2d(PLAYER_START_X, PLAYER_START_Y), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
 # Adding Ingredients
@@ -74,7 +74,7 @@ entities.append(Ingredient(FRUIT6_POS, INGREDIENTS["watermelon"], "watermelon"))
 
 # Return a random ingredient
 def getRandomIngredient():
-    return ingredients[random.randint(0, 5)]
+    return random.choice(ingredients)
 
 # Adding customers
 customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
@@ -86,16 +86,21 @@ entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_
 
 # Deciding if a customer should be spawned this tick
 def shouldSpawnCustomer():
-    return random.randint(0, 1000) > 997
+    randint = random.randint(
+        SPAWN_CUSTOMER_RANGE_START,
+        SPAWN_CUSTOMER_RANGE_STOP
+    )
+
+    return randint > SPAWN_CUSTOMER_REQUIRED_LOWERBOUND
 
 # The initial state of our game
 clock = pygame.time.Clock()
 running = True
-time_left = 60
+time_left = INITIAL_TIME_LEFT
 current_scene = "MENU"
 
 # Font for our user interface
-font = pygame.font.SysFont('Palatino', 30)
+font = pygame.font.SysFont('Palatino', FONT_SIZE)
 
 # #############################################################################
 # ################################ Game Loop ##################################
@@ -119,17 +124,18 @@ while running:
         result = credit(screen)
     elif current_scene == "SCORE":
         result = score(screen, player.score)
-        player.score = 0
+        player.score = INITIAL_SCORE
     elif current_scene == "GAME":
         # Handle time out
         if time_left < 0:
             result = "SCORE"
-            time_left = 60
+            time_left = INITIAL_TIME_LEFT
 
-        screen.blit(background_image, (0, 0))
-        clock.tick(60)
 
-        time_left -= 1/60
+        screen.blit(background_image, BACKGROUND_COORDS)
+        clock.tick(FPS)
+
+        time_left -= 1/FPS
         for entity in entities:
             entity.draw(screen)
 
@@ -138,10 +144,10 @@ while running:
         score_text = font.render(f'Score: {player.score}', True, WHITE)
 
         screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
-        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
+        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + SCORE_TEXT_Y_OFFSET))
 
     # Also don't do this
-    if random.randint(0, 1000) > 997:
+    if shouldSpawnCustomer():
         if customer_1 not in entities:
             customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
             entities.append(customer_1)
