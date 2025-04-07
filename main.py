@@ -18,6 +18,8 @@ from src.entities.customer import *
 from src.entities.player import *
 from src.util.vec2d import *
 from src.entities.ingredient import num_food
+from src.scenes.scenes import handle_scenes
+
 
 
 # #############################################################################
@@ -66,8 +68,8 @@ entities.append(player)
 # Adding Ingredients
 ingredients = ["strawberry", "sushi", "peach", "banana", "grapes", "watermelon"]
 fruit_pos = [FRUIT1_POS, FRUIT2_POS, FRUIT3_POS, FRUIT4_POS, FRUIT5_POS, FRUIT6_POS]
-for i, ingredient in enumerate(ingredients):
-    entities.append(Ingredient(fruit_pos[i], INGREDIENTS[ingredient], ingredient))
+for i in range(0, num_food()):
+    entities.append(Ingredient(fruit_pos[i], INGREDIENTS[ingredients[i]], ingredients[i]))
 
 # Return a random ingredient
 def getRandomIngredient():
@@ -91,8 +93,6 @@ running = True
 time_left = 60
 current_scene = "MENU"
 
-# Font for our user interface
-font = pygame.font.SysFont('Palatino', 30)
 
 # #############################################################################
 # ################################ Game Loop ##################################
@@ -109,34 +109,6 @@ while running:
     for entity in entities:
         entity.update(entities)
 
-    # Don't do this
-    if current_scene == "MENU":
-        result = menu(screen)
-    elif current_scene == "CREDIT":
-        result = credit(screen)
-    elif current_scene == "SCORE":
-        result = score(screen, player.score)
-        player.score = 0
-    elif current_scene == "GAME":
-        # Handle time out
-        if time_left < 0:
-            result = "SCORE"
-            time_left = 60
-
-        screen.blit(background_image, (0, 0))
-        clock.tick(60)
-
-        time_left -= 1/60
-        for entity in entities:
-            entity.draw(screen)
-
-        # Display our user interface
-        time_text = font.render(f'Time: {int(time_left)} sec', True, WHITE)
-        score_text = font.render(f'Score: {player.score}', True, WHITE)
-
-        screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
-        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
-
     # Spawning more customers if they left
     if shouldSpawnCustomer():
         for i, customer in enumerate(customers):
@@ -146,6 +118,9 @@ while running:
                 entities.append(customer)
                 break
 
-    current_scene = scene_map[current_scene].get(result, current_scene)
+    # Handle scene logic
+    current_scene, time_left = handle_scenes(screen, player, entities, 
+                                             background_image, clock, time_left, 
+                                             current_scene)
     pygame.display.update()
 
