@@ -20,19 +20,3 @@ def respawn_customer(customers, customer_pos, entities, player):
                 customer = Customer(getRandomIngredient(), player, Vec2d(customer_pos[i]))
                 customers[i] = customer
                 entities.append(customer)
-
-
-# ============================== Below is random respawn ============================
-
-# # Deciding if a customer should be spawned this tick
-# def shouldSpawnCustomer():
-#     return random.randint(0, 1000) > 997
-
-# def respawn_customer(customers, customer_pos, entities, player):
-#     if shouldSpawnCustomer():
-#         for i, customer in enumerate(customers):
-#             if customer not in entities:
-#                 customer = Customer(getRandomIngredient(), player, Vec2d(customer_pos[i]))
-#                 customers[i] = customer
-#                 entities.append(customer)
-#                 break
