@@ -64,22 +64,19 @@ player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_spri
 entities.append(player)
 
 # Adding Ingredients
-ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
-entities.append(Ingredient(FRUIT1_POS, INGREDIENTS["strawberry"], "strawberry"))
-entities.append(Ingredient(FRUIT2_POS, INGREDIENTS["sushi"], "sushi"))
-entities.append(Ingredient(FRUIT3_POS, INGREDIENTS["peach"], "peach"))
-entities.append(Ingredient(FRUIT4_POS, INGREDIENTS["banana"], "banana"))
-entities.append(Ingredient(FRUIT5_POS, INGREDIENTS["grapes"], "grapes"))
-entities.append(Ingredient(FRUIT6_POS, INGREDIENTS["watermelon"], "watermelon"))
+ingredients = ["strawberry", "sushi", "peach", "banana", "grapes", "watermelon"]
+fruit_pos = [FRUIT1_POS, FRUIT2_POS, FRUIT3_POS, FRUIT4_POS, FRUIT5_POS, FRUIT6_POS]
+for i, ingredient in enumerate(ingredients):
+    entities.append(Ingredient(fruit_pos[i], INGREDIENTS[ingredient], ingredient))
 
 # Return a random ingredient
 def getRandomIngredient():
     return ingredients[random.randint(0, 5)]
 
 # Adding customers
-cust_positions = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
+customer_pos = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
 customers = []
-for position in cust_positions:
+for position in customer_pos:
     customer = Customer(getRandomIngredient(), player, Vec2d(position))
     customers.append(customer)
     entities += [customer]
@@ -144,7 +141,7 @@ while running:
     if shouldSpawnCustomer():
         for i, customer in enumerate(customers):
             if customer not in entities:
-                customer = Customer(getRandomIngredient(), player, Vec2d(cust_positions[i]))
+                customer = Customer(getRandomIngredient(), player, Vec2d(customer_pos[i]))
                 customers[i] = customer
                 entities.append(customer)
                 break
