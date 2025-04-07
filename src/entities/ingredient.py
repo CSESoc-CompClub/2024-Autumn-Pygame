@@ -15,7 +15,7 @@ INGREDIENTS = {
 }
 
 def num_food() -> int: 
-    return len(INGREDIENTS) - 1
+    return len(INGREDIENTS)
 
 
 class Ingredient(Entity):

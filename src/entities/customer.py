@@ -7,6 +7,7 @@ from src.entities.ingredient import INGREDIENTS
 from src.entities.entity import *
 from src.constants import *
 from src.util.vec2d import *
+import time
 
 class CState(Enum):
     WAITING_FOR_FOOD = 1
@@ -51,6 +52,7 @@ class Customer(Entity):
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.player = player
         self.sprite: Surface = ANIMALS[random.randint(1, 4)]
+        self.time_at_leaving = None
 
     def draw(self, screen):
         screen.blit(self.sprite, self.pos)
@@ -97,6 +99,7 @@ class Customer(Entity):
         self.cur_timer = 0
 
     def destroy(self, entities: list[Entity]):
+        self.time_at_leaving = time.time()
         entities.remove(self)
 
     def interact(self, food_retrieved):

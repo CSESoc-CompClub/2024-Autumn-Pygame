@@ -6,18 +6,17 @@
 
 import random
 import pygame
-from src.entities.ingredient import INGREDIENTS
+from src.entities.ingredient import INGREDIENTS, num_food
 from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
-from src.scenes.menu import menu
-from src.scenes.credit import credit
-from src.scenes.score import score
 from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
 from src.util.vec2d import *
-from src.entities.ingredient import num_food
+from src.scenes.scenes import handle_scenes
+from src.entities.respawn_customer import respawn_customer
+
 
 
 # #############################################################################
@@ -40,9 +39,8 @@ pygame.display.set_icon(pygame.image.load("./sprites/temp/temp_icon.png"))
 
 # Scene transition map
 scene_map = {
-    "MENU": {"GAME": "GAME", "CREDIT": "CREDIT"},
+    "MENU": {"GAME": "GAME"},
     "GAME": {"SCORE": "SCORE"},
-    "CREDIT": {"MENU": "MENU"},
     "SCORE": {"GAME": "GAME", "MENU": "MENU"},
 }
 
@@ -64,29 +62,23 @@ player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_spri
 entities.append(player)
 
 # Adding Ingredients
-ingredients = ["watermelon", "sushi", "peach", "banana", "grapes", "strawberry"]
-entities.append(Ingredient(FRUIT1_POS, INGREDIENTS["strawberry"], "strawberry"))
-entities.append(Ingredient(FRUIT2_POS, INGREDIENTS["sushi"], "sushi"))
-entities.append(Ingredient(FRUIT3_POS, INGREDIENTS["peach"], "peach"))
-entities.append(Ingredient(FRUIT4_POS, INGREDIENTS["banana"], "banana"))
-entities.append(Ingredient(FRUIT5_POS, INGREDIENTS["grapes"], "grapes"))
-entities.append(Ingredient(FRUIT6_POS, INGREDIENTS["watermelon"], "watermelon"))
+ingredients = list(INGREDIENTS.keys())
+fruit_pos = [FRUIT1_POS, FRUIT2_POS, FRUIT3_POS, FRUIT4_POS, FRUIT5_POS, FRUIT6_POS]
+for i in range(0, num_food()):
+    entities.append(Ingredient(fruit_pos[i], INGREDIENTS[ingredients[i]], ingredients[i]))
 
 # Return a random ingredient
 def getRandomIngredient():
-    return ingredients[random.randint(0, 5)]
+    return ingredients[random.randint(0, num_food() - 1)]
 
 # Adding customers
-customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
-customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
-customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
-customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
-customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
-entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
-
-# Deciding if a customer should be spawned this tick
-def shouldSpawnCustomer():
-    return random.randint(0, 1000) > 997
+customer_pos = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
+customers = []
+for position in customer_pos:
+    customer = Customer(getRandomIngredient(), player, Vec2d(position))
+    customers.append(customer)
+    # entities += [customer]
+    entities.append(customer)
 
 # The initial state of our game
 clock = pygame.time.Clock()
@@ -94,8 +86,6 @@ running = True
 time_left = 60
 current_scene = "MENU"
 
-# Font for our user interface
-font = pygame.font.SysFont('Palatino', 30)
 
 # #############################################################################
 # ################################ Game Loop ##################################
@@ -112,52 +102,11 @@ while running:
     for entity in entities:
         entity.update(entities)
 
-    # Don't do this
-    if current_scene == "MENU":
-        result = menu(screen)
-    elif current_scene == "CREDIT":
-        result = credit(screen)
-    elif current_scene == "SCORE":
-        result = score(screen, player.score)
-        player.score = 0
-    elif current_scene == "GAME":
-        # Handle time out
-        if time_left < 0:
-            result = "SCORE"
-            time_left = 60
+    # Respawn customers
+    respawn_customer(customers, customer_pos, entities, player)
 
-        screen.blit(background_image, (0, 0))
-        clock.tick(60)
-
-        time_left -= 1/60
-        for entity in entities:
-            entity.draw(screen)
-
-        # Display our user interface
-        time_text = font.render(f'Time: {int(time_left)} sec', True, WHITE)
-        score_text = font.render(f'Score: {player.score}', True, WHITE)
-
-        screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
-        screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
-
-    # Also don't do this
-    if random.randint(0, 1000) > 997:
-        if customer_1 not in entities:
-            customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
-            entities.append(customer_1)
-        elif customer_2 not in entities:
-            customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
-            entities.append(customer_2)
-        elif customer_3 not in entities:
-            customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
-            entities.append(customer_3)
-        elif customer_4 not in entities:
-            customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
-            entities.append(customer_4)
-        elif customer_5 not in entities:
-            customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
-            entities.append(customer_5)
-
-    current_scene = scene_map[current_scene].get(result, current_scene)
+    # Handle scene logic
+    current_scene, time_left = handle_scenes(screen, player, entities, background_image, 
+                                             clock, time_left, current_scene)
     pygame.display.update()
 

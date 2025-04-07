@@ -8,9 +8,8 @@ def menu(screen):
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
     # Buttons
-    play_button = Button("Play", constants.CENTER_X - 320, 525, 140, 40)
-    credit_button = Button("Credits", constants.CENTER_X - 50, 525, 140, 40)
-    quit_button = Button("Quit", constants.CENTER_X + 210, 525, 140, 40)
+    play_button = Button("Play", constants.CENTER_X - 320, 525, 210, 60)
+    quit_button = Button("Quit", constants.CENTER_X + 110, 525, 210, 60)
 
     while True:
         for event in pygame.event.get():
@@ -20,15 +19,12 @@ def menu(screen):
                 mouse_pos = event.pos
                 if play_button.is_clicked(mouse_pos):
                     return "GAME"
-                elif credit_button.is_clicked(mouse_pos):
-                    return "CREDIT"
                 elif quit_button.is_clicked(mouse_pos):
                     pygame.quit()
 
         screen.blit(background_image, (0, 0))
 
         play_button.draw(screen)
-        credit_button.draw(screen)
         quit_button.draw(screen)
 
         pygame.display.flip()
