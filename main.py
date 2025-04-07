@@ -100,7 +100,7 @@ time_left = INITIAL_TIME_LEFT
 current_scene = "MENU"
 
 # Font for our user interface
-font = pygame.font.SysFont('Palatino', FONT_SIZE)
+font = pygame.font.SysFont('Palatino', UI_FONT_SIZE)
 
 # #############################################################################
 # ################################ Game Loop ##################################

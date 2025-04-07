@@ -8,19 +8,24 @@ class Button:
         self.y = y
         self.width = width
         self.height = height
-        self.border_radius = 12
+        self.border_radius = constants.BUTTON_BORDER_RADIUS
 
         # Text
         self.text = text
         self.text_color = constants.YELLOW
-        self.font = pygame.font.SysFont('Palatino', 35)
+        self.font = pygame.font.SysFont('Palatino', constants.BUTTON_FONT_SIZE)
 
         # Rectangle
         self.rect = pygame.Rect(x, y, width, height)
         self.color = constants.BURGUNDY
 
         # Border
-        self.border_rect = pygame.Rect(x - 2, y - 2, width + 5, height + 5)
+        self.border_rect = pygame.Rect(
+            x + constants.BUTTON_BORDER_X_OFFSET,
+            y + constants.BUTTON_BORDER_Y_OFFSET,
+            width + constants.BUTTON_BORDER_W_OFFSET,
+            height + constants.BUTTON_BORDER_H_OFFSET
+        )
         self.border_color = constants.BLACK
 
     def draw(self, screen):
