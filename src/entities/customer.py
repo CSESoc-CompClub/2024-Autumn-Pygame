@@ -19,22 +19,17 @@ CUSTOMER_STATES: Dict[CState, Surface] = {
     CState.LEAVING: pygame.image.load("./sprites/temp/temp_item_tile.png"),
 }
 
-CUSTOMER_SIZE = (100, 100)
-ANIMALS = {
-    1: pygame.transform.scale(pygame.image.load("./sprites/animal1.png"), CUSTOMER_SIZE),
-    2: pygame.transform.scale(pygame.image.load("./sprites/animal2.png"), CUSTOMER_SIZE),
-    3: pygame.transform.scale(pygame.image.load("./sprites/animal3.png"), CUSTOMER_SIZE),
-    4: pygame.transform.scale(pygame.image.load("./sprites/animal4.png"), CUSTOMER_SIZE),
-}
+ANIMALS = [
+    pygame.transform.scale(pygame.image.load(f"./sprites/animal{i}.png"), CUSTOMER_SIZE)
+    for i in range(ANIMAL_LABEL_START, ANIMAL_LABEL_STOP + 1)
+]
 
-EATING_SPRITE: Surface = pygame.transform.scale(pygame.image.load("./sprites/eating.png"), (120, 120))
+EATING_SPRITE: Surface = pygame.transform.scale(
+    pygame.image.load("./sprites/eating.png"),
+    EATING_SPRITE_SIZE
+)
 
 CUSTOMER_HITBOX_SIZE: Vec2d = Vec2d(TILE_SIZE / 2, TILE_SIZE)
-
-WAITING_AT_ENTRANCE_TIMEOUT: int = 8000  # 8 seconds
-WAITING_TO_ORDER_TIMEOUT: int = 8000  # 8 seconds
-WAITING_FOR_FOOD_TIMEOUT: int = 8000  # 8 seconds
-EATING_TIMEOUT: int = 240  # 5  mseconds
 
 
 class Customer(Entity):
@@ -50,7 +45,7 @@ class Customer(Entity):
         self.cur_timer = 0
         self.cur_timeout = WAITING_FOR_FOOD_TIMEOUT
         self.player = player
-        self.sprite: Surface = ANIMALS[random.randint(1, 4)]
+        self.sprite: Surface = random.choice(ANIMALS)
 
     def draw(self, screen):
         screen.blit(self.sprite, self.pos)
@@ -58,9 +53,15 @@ class Customer(Entity):
         # place status icon
         statex, statey = self.pos
         if self.state == CState.EATING:
-            screen.blit(EATING_SPRITE, (statex - 75, statey - 50))
+            screen.blit(
+                EATING_SPRITE,
+                (statex + EATING_ICON_OFFSET_Y, statey + EATING_ICON_OFFSET_X)
+            )
         else:
-            screen.blit(INGREDIENTS[self.order], (statex - 50, statey - 25))
+            screen.blit(
+                INGREDIENTS[self.order],
+                (statex + WAITING_ICON_OFFSET_Y, statey + WAITING_ICON_OFFSET_X)
+            )
 
     def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:
