@@ -132,7 +132,7 @@ while running:
             time_left = INITIAL_TIME_LEFT
 
 
-        screen.blit(background_image, BACKGROUND_COORDS)
+        screen.blit(background_image, BACKGROUND_POS)
         clock.tick(FPS)
 
         time_left -= 1/FPS

@@ -18,10 +18,10 @@ def credit(screen):
     # Button
     Menu_button = Button(
         "Menu",
-        constants.MENU_BUTTON_POS_X,
-        constants.MENU_BUTTON_POS_Y,
-        constants.MENU_BUTTON_POS_W,
-        constants.MENU_BUTTON_POS_H
+        constants.CREDIT_MENU_BUTTON_POS_X,
+        constants.DEFAULT_BUTTON_POS_Y,
+        constants.DEFAULT_MENU_BUTTON_POS_W,
+        constants.DEFAULT_MENU_BUTTON_POS_H
     )
 
     while True:
