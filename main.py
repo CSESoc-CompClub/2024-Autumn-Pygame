@@ -77,12 +77,12 @@ def getRandomIngredient():
     return ingredients[random.randint(0, 5)]
 
 # Adding customers
-customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
-customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
-customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
-customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
-customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
-entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
+cust_positions = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
+customers = []
+for position in cust_positions:
+    customer = Customer(getRandomIngredient(), player, Vec2d(position))
+    customers.append(customer)
+    entities += [customer]
 
 # Deciding if a customer should be spawned this tick
 def shouldSpawnCustomer():
@@ -140,23 +140,14 @@ while running:
         screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
         screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
 
-    # Also don't do this
-    if random.randint(0, 1000) > 997:
-        if customer_1 not in entities:
-            customer_1 = Customer(getRandomIngredient(), player, Vec2d(CUST1_POS))
-            entities.append(customer_1)
-        elif customer_2 not in entities:
-            customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
-            entities.append(customer_2)
-        elif customer_3 not in entities:
-            customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
-            entities.append(customer_3)
-        elif customer_4 not in entities:
-            customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
-            entities.append(customer_4)
-        elif customer_5 not in entities:
-            customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
-            entities.append(customer_5)
+    # Spawning more customers if they left
+    if shouldSpawnCustomer():
+        for i, customer in enumerate(customers):
+            if customer not in entities:
+                customer = Customer(getRandomIngredient(), player, Vec2d(cust_positions[i]))
+                customers[i] = customer
+                entities.append(customer)
+                break
 
     current_scene = scene_map[current_scene].get(result, current_scene)
     pygame.display.update()
