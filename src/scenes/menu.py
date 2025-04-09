@@ -8,8 +8,8 @@ def menu(screen):
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
     # Buttons
-    play_button = Button("Play", constants.CENTER_X - 320, 525, 210, 60)
-    quit_button = Button("Quit", constants.CENTER_X + 110, 525, 210, 60)
+    play_button = Button("Play", constants.CENTER_X - 270, 525, 210, 45)
+    quit_button = Button("Quit", constants.CENTER_X + 110, 525, 210, 45)
 
     while True:
         for event in pygame.event.get():

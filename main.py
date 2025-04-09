@@ -35,7 +35,7 @@ screen = pygame.display.set_mode(
 
 # Title and Icon
 pygame.display.set_caption("Let him cook!!")
-pygame.display.set_icon(pygame.image.load("./sprites/temp/temp_icon.png"))
+pygame.display.set_icon(pygame.image.load("./sprites/game_icon.png"))
 
 # Scene transition map
 scene_map = {
@@ -106,7 +106,7 @@ while running:
     respawn_customer(customers, customer_pos, entities, player)
 
     # Handle scene logic
-    current_scene, time_left = handle_scenes(screen, player, entities, background_image, 
+    current_scene, time_left = handle_scenes(screen, player, entities, background_image,
                                              clock, time_left, current_scene)
     pygame.display.update()
 
