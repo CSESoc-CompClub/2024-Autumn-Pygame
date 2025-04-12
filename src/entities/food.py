@@ -5,7 +5,7 @@ import pygame
 
 SPRITE_SIZE = (TILE_SIZE, TILE_SIZE)
 
-INGREDIENTS = {
+FOODS = {
     "watermelon": pygame.transform.scale(pygame.image.load("./sprites/watermelon.png"), SPRITE_SIZE),
     "sushi": pygame.transform.scale(pygame.image.load("./sprites/sushi.png"), SPRITE_SIZE),
     "peach": pygame.transform.scale(pygame.image.load("./sprites/peach.png"), SPRITE_SIZE),
@@ -15,10 +15,10 @@ INGREDIENTS = {
 }
 
 def num_food() -> int: 
-    return len(INGREDIENTS)
+    return len(FOODS)
 
 
-class Ingredient(Entity):
+class Food(Entity):
     def __init__(self, pos, sprite: str, name: str):
         super().__init__(pos)
         self.name = name

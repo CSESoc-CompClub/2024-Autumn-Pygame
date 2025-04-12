@@ -6,7 +6,7 @@
 
 import random
 import pygame
-from entities.food import INGREDIENTS, num_food
+from entities.food import FOODS, num_food
 from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
@@ -61,21 +61,21 @@ entities = []
 player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
 entities.append(player)
 
-# Adding Ingredients
-ingredients = list(INGREDIENTS.keys())
+# Adding foods
+foods = list(FOODS.keys())
 fruit_pos = [FRUIT1_POS, FRUIT2_POS, FRUIT3_POS, FRUIT4_POS, FRUIT5_POS, FRUIT6_POS]
 for i in range(0, num_food()):
-    entities.append(Ingredient(fruit_pos[i], INGREDIENTS[ingredients[i]], ingredients[i]))
+    entities.append(Food(fruit_pos[i], FOODS[foods[i]], foods[i]))
 
-# Return a random ingredient
-def getRandomIngredient():
-    return ingredients[random.randint(0, num_food() - 1)]
+# Return a random food
+def getRandomFood():
+    return foods[random.randint(0, num_food() - 1)]
 
 # Adding customers
 customer_pos = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
 customers = []
 for position in customer_pos:
-    customer = Customer(getRandomIngredient(), player, Vec2d(position))
+    customer = Customer(getRandomFood(), player, Vec2d(position))
     customers.append(customer)
     # entities += [customer]
     entities.append(customer)

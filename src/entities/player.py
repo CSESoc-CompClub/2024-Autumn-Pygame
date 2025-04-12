@@ -4,7 +4,7 @@ from src.entities.entity import Entity
 from src.constants import *
 from src.util.vec2d import Vec2d
 from src.entities.customer import *
-from entities.food import Ingredient
+from entities.food import Food
 
 
 class Player(Entity):
@@ -42,7 +42,7 @@ class Player(Entity):
         threshold_interact_distance = 100
         nearest_entity, nearest_distance = get_nearest_entity(self, entities)
 
-        if type(nearest_entity) is Ingredient:
+        if type(nearest_entity) is Food:
             if nearest_distance <= threshold_interact_distance:
                 self.food_retrieved = nearest_entity.name
         elif type(nearest_entity) is Customer and self.food_retrieved:
@@ -52,4 +52,4 @@ class Player(Entity):
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)
         if self.food_retrieved is not None:
-            screen.blit(INGREDIENTS[self.food_retrieved], self.hitbox.topleft)
+            screen.blit(FOODS[self.food_retrieved], self.hitbox.topleft)
