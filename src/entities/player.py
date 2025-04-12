@@ -15,16 +15,16 @@ def get_entities_distance(entity1: Entity, entity2: Entity):
     return pos1.get_distance(pos2)
 
 
-def get_nearest_entity(entity: Entity, entities: list[Entity]) -> Entity:
+def get_nearest_entity(entity: Entity, entities: list[Entity]) -> tuple[Entity, float]:
     nearest_entity = entities[0]
-    nearest_distance = 12031239
+    nearest_distance = math.inf 
     for e in entities:
         if e != entity:
             distance = get_entities_distance(entity, e)
             if distance < nearest_distance:
                 nearest_entity = e
                 nearest_distance = distance
-    return nearest_entity
+    return nearest_entity, nearest_distance
 
 
 class Player(Entity):
@@ -59,9 +59,12 @@ class Player(Entity):
         self.pos = self.hitbox.topleft
 
     def interact_nearest(self, entities):
-        nearest_entity = get_nearest_entity(self, entities)
+        threshold_interact_distance = 100
+        nearest_entity, nearest_distance = get_nearest_entity(self, entities)
+
         if type(nearest_entity) is Ingredient:
-            self.food_retrieved = nearest_entity.name
+            if nearest_distance <= threshold_interact_distance:
+                self.food_retrieved = nearest_entity.name
         elif type(nearest_entity) is Customer and self.food_retrieved:
             nearest_entity.interact(self.food_retrieved)
             self.food_retrieved = None
