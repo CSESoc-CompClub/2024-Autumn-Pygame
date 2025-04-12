@@ -1,6 +1,6 @@
 import random
 import time
-from src.entities.ingredient import INGREDIENTS, num_food
+from entities.food import INGREDIENTS, num_food
 from src.entities.customer import Customer
 from src.util.vec2d import *
 

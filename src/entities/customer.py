@@ -3,7 +3,7 @@ import random
 from enum import *
 from typing import *
 from pygame import *
-from src.entities.ingredient import INGREDIENTS
+from entities.food import INGREDIENTS
 from src.entities.entity import *
 from src.constants import *
 from src.util.vec2d import *

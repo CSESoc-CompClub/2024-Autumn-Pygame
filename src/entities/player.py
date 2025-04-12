@@ -4,7 +4,7 @@ from src.entities.entity import Entity
 from src.constants import *
 from src.util.vec2d import Vec2d
 from src.entities.customer import *
-from src.entities.ingredient import Ingredient
+from entities.food import Ingredient
 
 
 class Player(Entity):
