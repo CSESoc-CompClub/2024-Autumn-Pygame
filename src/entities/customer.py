@@ -3,7 +3,7 @@ import random
 from enum import *
 from typing import *
 from pygame import *
-from src.entities.ingredient import INGREDIENTS
+from entities.food import FOODS
 from src.entities.entity import *
 from src.constants import *
 from src.util.vec2d import *
@@ -62,7 +62,7 @@ class Customer(Entity):
         if self.state == CState.EATING:
             screen.blit(EATING_SPRITE, (statex - 75, statey - 50))
         else:
-            screen.blit(INGREDIENTS[self.order], (statex - 50, statey - 25))
+            screen.blit(FOODS[self.order], (statex - 50, statey - 25))
 
     def update(self, entities: list[Entity]):
         if self.state == CState.WAITING_FOR_FOOD:
