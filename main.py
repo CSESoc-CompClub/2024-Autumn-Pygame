@@ -6,13 +6,14 @@
 
 import random
 import pygame
-from entities.food import FOODS, num_food
+from src.entities.food import FOODS, num_food
 from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
 from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
+from src.entities.effect import EffectManager
 from src.util.vec2d import *
 from src.scenes.scenes import handle_scenes
 from src.entities.respawn_customer import respawn_customer
@@ -79,6 +80,9 @@ for position in customer_pos:
     customers.append(customer)
     # entities += [customer]
     entities.append(customer)
+
+# Adding effects
+effects = EffectManager()
 
 # The initial state of our game
 clock = pygame.time.Clock()
