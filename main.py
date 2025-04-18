@@ -103,14 +103,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        effects.handle_events(event, entities)
+
     for entity in entities:
         entity.update(entities)
 
     # Respawn customers
     respawn_customer(customers, customer_pos, entities, player)
 
+    effects.update()
+
     # Handle scene logic
     current_scene, time_left = handle_scenes(screen, player, entities, background_image,
                                              clock, time_left, current_scene)
     pygame.display.update()
+
+    # add a print statement here to show the number of ticks
+    
 
