@@ -111,7 +111,7 @@ while running:
     # Respawn customers
     respawn_customer(customers, customer_pos, entities, player)
 
-    effects.update()
+    effects.update(entities)
 
     # Handle scene logic
     current_scene, time_left = handle_scenes(screen, player, entities, background_image,

@@ -31,7 +31,7 @@ class Effect(NoRangeInteraction, ABC):
         return screen.blit(self._sprite, self.pos) # type: ignore
     
     # TODO: add effect behaviours
-    def update(self, entities):
+    def update(self, entities: list[Entity]):
         current_time = pygame.time.get_ticks()
         if current_time - self._spawn_time < self._despawn:
             return
@@ -76,7 +76,7 @@ class EffectManager:
 
         cell_id = 0
         self.cells = list[Cell]()
-        for row in range(2, rows-2):
+        for row in range(2, rows-3):
             for col in range(1, cols-1):
                 self.cells.append(
                     Cell(id=cell_id, pos=Vec2d(x_or_pair=col, y=row) * Effect.SPRITE_SIZE)
@@ -89,11 +89,11 @@ class EffectManager:
         pygame.time.set_timer(self.SPAWN_SPEED_EVENT, 15_000)
         pygame.time.set_timer(self.SPAWN_TIME_EVENT, 10_000)
 
-        self.active_effects: dict[Any, Union[None, bool]] = {SpeedEffect: None, TimeEffect: None}
+        self.active_effects: dict[type[Effect], bool] = {SpeedEffect: False, TimeEffect: False}
 
     def spawn_effect(self, effect_subtype, entities: list[Entity]):
         # don't spawn more effects if that effect type is currently spawned
-        if self.active_effects[effect_subtype] is not None:
+        if self.active_effects[effect_subtype]:
             return
 
         available_cells = [c for c in self.cells if c.effect is None]
@@ -107,20 +107,22 @@ class EffectManager:
         self.active_effects[effect_subtype] = True
         entities.append(effect)
 
-    def handle_events(self, event, entities: list[Entity]):
+    def handle_events(self, event: pygame.event.Event, entities: list[Entity]):
         if event.type == self.SPAWN_SPEED_EVENT:
             self.spawn_effect(SpeedEffect, entities)
         elif event.type == self.SPAWN_TIME_EVENT:
             self.spawn_effect(TimeEffect, entities)
 
-    def update(self):
+    def update(self, entities: list[Entity]):
         for cell in self.cells:
-            if cell.effect is not None:
-                if cell.effect not in [e for e in self.active_effects.values() if e is not None]:
-                    for effect_class in self.active_effects:
-                        if isinstance(cell.effect, effect_class):
-                            self.active_effects[effect_class] = None
-                            break
-                    cell.effect = None
+            if cell.effect is None or cell.effect in entities:
+                continue
+
+            for effect_class in self.active_effects:
+                if isinstance(cell.effect, effect_class) and self.active_effects[effect_class]:
+                    self.active_effects[effect_class] = False
+                    break
+
+            cell.effect = None
 
         
