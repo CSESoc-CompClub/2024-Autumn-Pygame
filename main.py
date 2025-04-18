@@ -6,7 +6,7 @@
 
 import random
 import pygame
-from entities.food import FOODS, num_food
+from src.entities.food import FOODS, num_food
 from src.constants import *
 from pygame.locals import *
 from src.entities.player import Player
