@@ -13,6 +13,7 @@ from src.entities.player import Player
 from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
+from src.entities.effect import EffectManager
 from src.util.vec2d import *
 from src.scenes.scenes import handle_scenes
 from src.entities.respawn_customer import respawn_customer
@@ -80,6 +81,9 @@ for position in customer_pos:
     # entities += [customer]
     entities.append(customer)
 
+# Adding effects
+effects = EffectManager()
+
 # The initial state of our game
 clock = pygame.time.Clock()
 running = True
@@ -99,14 +103,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        effects.handle_events(event, entities)
+
     for entity in entities:
         entity.update(entities)
 
     # Respawn customers
     respawn_customer(customers, customer_pos, entities, player)
 
+    effects.update(entities)
+
     # Handle scene logic
     current_scene, time_left = handle_scenes(screen, player, entities, background_image,
                                              clock, time_left, current_scene)
     pygame.display.update()
+
+    # add a print statement here to show the number of ticks
+    
 
