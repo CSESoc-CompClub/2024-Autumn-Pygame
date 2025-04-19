@@ -85,7 +85,7 @@ The customer receives orders using the `try_receive_order` method. It returns wh
 
 > HINTS
 > -
-> - use `leave(False)` method to leave the restaurant angrily
+> - use `leave(True)` method to leave the restaurant angrily
 > - start eating using the `start_eating` method
 
 ### [Task 2.5] Interact ❤️!:

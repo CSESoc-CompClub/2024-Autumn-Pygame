@@ -28,7 +28,7 @@ class Player(Entity):
         self.food_retrieved = None
         super().__init__(pos)
 
-    def update(self, state):
+    def update(self, entities):
         pass
 
     def move(self):

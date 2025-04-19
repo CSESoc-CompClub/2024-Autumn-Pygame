@@ -90,7 +90,8 @@ customer_2 = Customer(getRandomIngredient(), player, Vec2d(CUST2_POS))
 customer_3 = Customer(getRandomIngredient(), player, Vec2d(CUST3_POS))
 customer_4 = Customer(getRandomIngredient(), player, Vec2d(CUST4_POS))
 customer_5 = Customer(getRandomIngredient(), player, Vec2d(CUST5_POS))
-entities = entities + [customer_1, customer_2, customer_3, customer_4, customer_5]
+customers = [customer_1, customer_2, customer_3, customer_4, customer_5]
+entities = entities + random.sample(customers, 3)
 
 # Deciding if a customer should be spawned this tick
 def shouldSpawnCustomer():
