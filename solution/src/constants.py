@@ -1,0 +1,56 @@
+# Dimensions
+from src.util.vec2d import Vec2d
+
+
+TILE_SIZE = 64
+GRID_SIZE_X = 14
+GRID_SIZE_Y = 10
+
+CENTER_X = (GRID_SIZE_X // 2) * TILE_SIZE
+CENTER_Y = (GRID_SIZE_Y // 2) * TILE_SIZE
+
+MIN_X = 38
+MAX_X = 760
+MIN_Y = 90
+MAX_Y = 380
+
+FLOOR_MIN_X = 50
+FLOOR_MIN_Y = 130
+
+
+# Colors
+BLACK = (18,8,6,255)
+WHITE = (245, 217, 171, 1)
+YELLOW = (234,175,55,255)
+BURGUNDY = (144,8,5,255)
+RED_BLACK = (111, 5, 1)
+
+
+# Positions
+CUST1_POS = (100, 540)
+CUST2_POS = (250, 540)
+CUST3_POS = (400, 540)
+CUST4_POS = (550, 540)
+CUST5_POS = (690, 540)
+
+FRUIT1_POS = (88, 30)
+FRUIT2_POS = (218, 30)
+FRUIT3_POS = (348, 30)
+FRUIT4_POS = (478, 30)
+FRUIT5_POS = (608, 30)
+FRUIT6_POS = (738, 30)
+
+# State Dictionary Keys
+CLOCK = "clock"
+RUNNING = "running"
+TIME_LEFT = "time_left"
+CURRENT_SCENE = "current_scene"
+
+# Effects
+PLAYER_SPEED = 6
+SPEED_BOOST = 2 # 100%
+SPEED_DURATION = 8000 # 8 seconds
+TIME_BOOST = 10 # 10 seconds
+
+# Misc
+MAX_DIST = 9999999999
