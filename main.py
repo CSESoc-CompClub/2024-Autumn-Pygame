@@ -58,7 +58,7 @@ background_image = pygame.transform.scale(
 entities = []
 
 # Placing our player
-player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/temp/temp_sprite.png")
+player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/poco_down.png")
 entities.append(player)
 
 # Adding foods
