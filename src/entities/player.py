@@ -6,12 +6,20 @@ from src.util.vec2d import Vec2d
 from src.entities.customer import *
 from src.entities.food import Food
 
+def load_sprite(sprite_path: str, size: tuple[int, int]):
+    return pygame.transform.scale(pygame.image.load(sprite_path), size)
 
 class Player(Entity):
+    PLAYER_SIZE = (100, 100)
+    MOVE_UP_SPRITE = load_sprite("./sprites/poco_up.png", PLAYER_SIZE)
+    MOVE_DOWN_SPRITE = load_sprite("./sprites/poco_down.png", PLAYER_SIZE)
+    MOVE_LEFT_SPRITE = load_sprite("./sprites/poco_left.png", PLAYER_SIZE)
+    MOVE_RIGHT_SPRITE = load_sprite("./sprites/poco_right.png", PLAYER_SIZE)
+
     def __init__(self, pos: Vec2d, sprite_path: str):
         self.speed = 5
         self.hitbox = Rect(pos.x, pos.y, TILE_SIZE, TILE_SIZE)
-        self.sprite = pygame.image.load(sprite_path)
+        self.sprite = load_sprite(sprite_path, Player.PLAYER_SIZE)
         self.score = 0
         # orders retrieved from the kitchen
         self.food_retrieved = None
@@ -38,6 +46,21 @@ class Player(Entity):
 
         self.pos = self.hitbox.topleft
 
+        # dont change sprites if no movement was input
+        if pos.x == 0 and pos.y == 0:
+            return
+
+        angle = pos.get_angle()
+        if angle == -90:
+            self.sprite = Player.MOVE_UP_SPRITE
+        elif angle == 90:
+            self.sprite = Player.MOVE_DOWN_SPRITE
+        elif -90 < angle < 90:
+            self.sprite = Player.MOVE_RIGHT_SPRITE
+        else:
+            self.sprite = Player.MOVE_LEFT_SPRITE
+
+
     def interact_nearest(self, entities):
         threshold_interact_distance = 100
         nearest_entity, nearest_distance = get_nearest_entity(self, entities)
@@ -52,4 +75,5 @@ class Player(Entity):
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)
         if self.food_retrieved is not None:
-            screen.blit(FOODS[self.food_retrieved], self.hitbox.topleft)
+            food_pos = Vec2d(self.hitbox.topleft) + (-25, -25)
+            screen.blit(FOODS[self.food_retrieved], food_pos)
