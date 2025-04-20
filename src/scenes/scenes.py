@@ -33,6 +33,7 @@ def handle_scenes(screen, player, entities, background_image, clock, time_left, 
         time_left -= 1/60
         for entity in entities:
             entity.draw(screen)
+        player.draw(screen)
 
         # Display our user interface
         time_text = font.render(f'Time: {int(time_left)} sec', True, WHITE)
