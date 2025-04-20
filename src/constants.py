@@ -43,14 +43,14 @@ FRUIT6_POS = (738, 30)
 # State Dictionary Keys
 CLOCK = "clock"
 RUNNING = "running"
-TIME_LEFT = "time_left" 
+TIME_LEFT = "time_left"
 CURRENT_SCENE = "current_scene"
 
 # Effects
-PLAYER_SPEED = 5
+PLAYER_SPEED = 6
 SPEED_BOOST = 2 # 100%
 SPEED_DURATION = 8000 # 8 seconds
-TIME_BOOST = 4 # 4 seconds
+TIME_BOOST = 10 # 10 seconds
 
 # Misc
 MAX_DIST = 9999999999

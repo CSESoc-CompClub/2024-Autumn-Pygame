@@ -4,6 +4,7 @@
 #                       On: <Date-Here>                      #
 ##############################################################
 
+import sys
 import random
 import pygame
 from src.entities.food import FOODS, num_food
@@ -13,12 +14,10 @@ from src.entities.player import Player
 from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
-from src.entities.effect import EffectManager
+from src.entities.effects.effect_manager import EffectManager
 from src.util.vec2d import *
 from src.scenes.scenes import handle_scenes
 from src.entities.respawn_customer import respawn_customer
-
-
 
 # #############################################################################
 # ########################## Initialise pygame ################################
@@ -59,7 +58,7 @@ background_image = pygame.transform.scale(
 entities = []
 
 # Placing our player
-player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/poco_down.png")
+player = Player(Vec2d(CENTER_X - 100, CENTER_Y - 100), "./sprites/player/poco_down.png")
 entities.append(player)
 
 # Adding foods
@@ -69,6 +68,7 @@ for i in range(0, num_food()):
     entities.append(Food(fruit_pos[i], FOODS[foods[i]], foods[i]))
 
 # Return a random food
+# This function picks a random food from the list of foods.
 def getRandomFood():
     return foods[random.randint(0, num_food() - 1)]
 
@@ -91,7 +91,6 @@ state = {
     CURRENT_SCENE: "MENU"
 }
 
-
 # #############################################################################
 # ################################ Game Loop ##################################
 # #############################################################################
@@ -99,25 +98,33 @@ state = {
 # Everything is rendered from the top to the bottom, so we start off by drawing
 # the window, then background, our entities, then our user interface (ie the score/timer text)
 
-while state[RUNNING]:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+try:
+    while state[RUNNING]:
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                state[RUNNING] = False
+                break
 
-        effects.handle_events(event, entities)
+            # Handle effect-related events
+            effects.handle_events(event, entities)
 
-    for entity in entities:
-        entity.update(entities, state)
+        if not state[RUNNING]:
+            break
 
-    # Respawn customers
-    respawn_customer(customers, customer_pos, entities, player)
+        # Update game state
+        for entity in entities:
+            entity.update(entities, state)
 
-    effects.update(entities, state)
+        respawn_customer(customers, customer_pos, entities, player)
+        effects.update(entities, state)
 
-    # Handle scene logic
-    handle_scenes(screen, player, entities, background_image, state)
-    pygame.display.update()
+        # Render
+        handle_scenes(screen, player, entities, background_image, state)
+        pygame.display.update()
 
-    # add a print statement here to show the number of ticks
-    
-
+        # Cap the frame rate
+        state[CLOCK].tick(60)
+finally:
+    pygame.quit()
+    sys.exit()
