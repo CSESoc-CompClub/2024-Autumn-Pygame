@@ -103,6 +103,7 @@ class EffectManager:
         for timer in [x for x in self.timers.keys() if self.timers[x] is not None]:
             if timer == SpeedEffect:
                 time_left = self.timers[SpeedEffect] - current_time
+                # Decaying speed boost
                 bonus_speed = time_left / SPEED_DURATION * SPEED_BOOST
                 player.speed = PLAYER_SPEED + bonus_speed
                 if time_left <= 0:
