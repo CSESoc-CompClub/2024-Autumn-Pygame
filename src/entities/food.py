@@ -30,5 +30,5 @@ class Food(Entity):
     def get_name(self) -> str:
         return self.name
 
-    def update(self, entities: list[Entity]):
+    def update(self, entities: list[Entity], state):
         pass

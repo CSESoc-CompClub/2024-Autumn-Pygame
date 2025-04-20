@@ -64,7 +64,7 @@ class Customer(Entity):
         else:
             screen.blit(FOODS[self.order], (statex - 50, statey - 25))
 
-    def update(self, entities: list[Entity]):
+    def update(self, entities: list[Entity], state):
         if self.state == CState.WAITING_FOR_FOOD:
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:

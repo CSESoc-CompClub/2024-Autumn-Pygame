@@ -1,4 +1,5 @@
 import pygame
+from pygame.rect import *
 from pygame.locals import *
 from src.entities.entity import Entity
 from src.constants import *
@@ -17,7 +18,7 @@ class Player(Entity):
     MOVE_RIGHT_SPRITE = load_sprite("./sprites/poco_right.png", PLAYER_SIZE)
 
     def __init__(self, pos: Vec2d, sprite_path: str):
-        self.speed = 5
+        self.speed = PLAYER_SPEED
         self.hitbox = Rect(pos.x, pos.y, TILE_SIZE, TILE_SIZE)
         self.sprite = load_sprite(sprite_path, Player.PLAYER_SIZE)
         self.score = 0
@@ -26,11 +27,11 @@ class Player(Entity):
         super().__init__(pos)
 
     # Set position and clamp within screen size
-    def update(self, state):
+    def update(self, entities: list[Entity], state):
         self.move()
         keys = pygame.key.get_pressed()
         if keys[K_SPACE]:
-            self.interact_nearest(state)
+            self.interact_nearest(entities)
 
     def move(self):
         keys = pygame.key.get_pressed()

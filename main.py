@@ -13,6 +13,7 @@ from src.entities.player import Player
 from src.entities.entity import *
 from src.entities.customer import *
 from src.entities.player import *
+from src.entities.effect import EffectManager
 from src.util.vec2d import *
 from src.scenes.scenes import handle_scenes
 from src.entities.respawn_customer import respawn_customer
@@ -77,14 +78,18 @@ customers = []
 for position in customer_pos:
     customer = Customer(getRandomFood(), player, Vec2d(position))
     customers.append(customer)
-    # entities += [customer]
     entities.append(customer)
 
+# Adding effects
+effects = EffectManager()
+
 # The initial state of our game
-clock = pygame.time.Clock()
-running = True
-time_left = 60
-current_scene = "MENU"
+state = {
+    CLOCK: pygame.time.Clock(),
+    RUNNING: True,
+    TIME_LEFT: 60,
+    CURRENT_SCENE: "MENU"
+}
 
 
 # #############################################################################
@@ -94,19 +99,25 @@ current_scene = "MENU"
 # Everything is rendered from the top to the bottom, so we start off by drawing
 # the window, then background, our entities, then our user interface (ie the score/timer text)
 
-while running:
+while state[RUNNING]:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+        effects.handle_events(event, entities)
+
     for entity in entities:
-        entity.update(entities)
+        entity.update(entities, state)
 
     # Respawn customers
     respawn_customer(customers, customer_pos, entities, player)
 
+    effects.update(entities, state)
+
     # Handle scene logic
-    current_scene, time_left = handle_scenes(screen, player, entities, background_image,
-                                             clock, time_left, current_scene)
+    handle_scenes(screen, player, entities, background_image, state)
     pygame.display.update()
+
+    # add a print statement here to show the number of ticks
+    
 

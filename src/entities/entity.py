@@ -8,6 +8,9 @@ class Entity:
 
     def get_position(self) -> Vec2d:
         return Vec2d(self.pos)
+    
+class NoRangeInteraction(Entity):
+    pass
 
 def get_entities_distance(entity1: Entity, entity2: Entity):
     pos1 = entity1.get_position()
@@ -21,7 +24,7 @@ def get_nearest_entity(entity: Entity, entities: list[Entity]) -> tuple[Entity, 
     nearest_entity = entities[0]
     nearest_distance = math.inf 
     for e in entities:
-        if e != entity:
+        if e != entity and not isinstance(e, NoRangeInteraction):
             distance = get_entities_distance(entity, e)
             if distance < nearest_distance:
                 nearest_entity = e
