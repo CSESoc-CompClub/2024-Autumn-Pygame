@@ -112,7 +112,7 @@ while state[RUNNING]:
     # Respawn customers
     respawn_customer(customers, customer_pos, entities, player)
 
-    effects.update(entities)
+    effects.update(entities, state)
 
     # Handle scene logic
     handle_scenes(screen, player, entities, background_image, state)

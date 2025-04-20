@@ -46,5 +46,11 @@ RUNNING = "running"
 TIME_LEFT = "time_left" 
 CURRENT_SCENE = "current_scene"
 
+# Effects
+PLAYER_SPEED = 5
+SPEED_BOOST = 2 # 100%
+SPEED_DURATION = 8000 # 8 seconds
+TIME_BOOST = 4 # 4 seconds
+
 # Misc
 MAX_DIST = 9999999999

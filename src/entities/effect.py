@@ -33,23 +33,10 @@ class Effect(NoRangeInteraction, ABC):
     def draw(self, screen: pygame.Surface):
         return screen.blit(self._sprite, self.pos) # type: ignore
     
-    def collide(self, entities):
-        for player in [x for x in entities if type(x) == Player]:
-            if player.hitbox.colliderect(self._hitbox):
-                return player
-    
-    def update(self, entities: list[Entity], state):
-        collided_player = self.collide(entities)
-        if collided_player:
-            if type(self) == TimeEffect:
-                state[TIME_LEFT] += self.time_boost
-            elif type(self) == SpeedEffect:
-                collided_player.speed *= self.speed_boost
-            entities.remove(self)
-        
+    def update(self, entities: list[Entity], state):      
         current_time = pygame.time.get_ticks()
         if current_time - self._spawn_time >= self._despawn:
-            entities.remove(self)                
+            entities.remove(self)
 
 
 class SpeedEffect(Effect):
@@ -60,7 +47,8 @@ class SpeedEffect(Effect):
             active_duration=10000,
             pos=pos
         )
-        self.speed_boost = 1.2
+        self.speed_boost = SPEED_BOOST
+        self.speed_duration = SPEED_DURATION
 
 class TimeEffect(Effect):
     def __init__(self, pos: Vec2d):
@@ -70,7 +58,7 @@ class TimeEffect(Effect):
             active_duration=5000,
             pos=pos
         )
-        self.time_boost = 5 # 5 seconds
+        self.time_boost = TIME_BOOST
     
 
 @dataclass
@@ -102,6 +90,7 @@ class EffectManager:
         pygame.time.set_timer(self.SPAWN_TIME_EVENT, 10_000)
 
         self.active_effects: dict[type[Effect], bool] = {SpeedEffect: False, TimeEffect: False}
+        self.timers = dict()
 
     def spawn_effect(self, effect_subtype, entities: list[Entity]):
         # don't spawn more effects if that effect type is currently spawned
@@ -125,7 +114,7 @@ class EffectManager:
         elif event.type == self.SPAWN_TIME_EVENT:
             self.spawn_effect(TimeEffect, entities)
 
-    def update(self, entities: list[Entity]):
+    def update(self, entities: list[Entity], state):
         for cell in self.cells:
             if cell.effect is None or cell.effect in entities:
                 continue
@@ -136,5 +125,38 @@ class EffectManager:
                     break
 
             cell.effect = None
+        self.activate_effect(entities, state)
+    
+    def collide(self, player, entities):
+        for effect in [x for x in entities if isinstance(x, Effect)]:
+            if player.hitbox.colliderect(effect._hitbox):
+                return effect
+    
+    def activate_effect(self, entities: list[Entity], state):
+        for entity in entities:
+            if type(entity) == Player:
+                player = entity
+                break
+        
+        effect = self.collide(player, entities)
+        if effect:
+            if type(effect) == TimeEffect:
+                state[TIME_LEFT] += effect.time_boost
+            elif type(effect) == SpeedEffect:
+                player.speed *= effect.speed_boost
+                self.timers[SpeedEffect] = pygame.time.get_ticks() + effect.speed_duration
+            entities.remove(effect)
+
+        # Process timers for effects
+        current_time = pygame.time.get_ticks()
+        print(self.timers)
+        for timer in [x for x in self.timers.keys() if self.timers[x] is not None]:
+            if timer == SpeedEffect: 
+                time_left = self.timers[SpeedEffect] - current_time
+                bonus_speed = time_left / SPEED_DURATION * SPEED_BOOST
+                player.speed = PLAYER_SPEED + bonus_speed
+                if time_left <= 0:
+                    player.speed = PLAYER_SPEED
+                    self.timers[SpeedEffect] = None
 
         

@@ -10,7 +10,7 @@ from src.entities.food import Food
 
 class Player(Entity):
     def __init__(self, pos: Vec2d, sprite_path: str):
-        self.speed = 5
+        self.speed = PLAYER_SPEED
         self.hitbox = Rect(pos.x, pos.y, TILE_SIZE, TILE_SIZE)
         self.sprite = pygame.image.load(sprite_path)
         self.score = 0
