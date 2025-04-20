@@ -75,4 +75,5 @@ class Player(Entity):
     def draw(self, screen: pygame.Surface):
         screen.blit(self.sprite, self.hitbox.topleft)
         if self.food_retrieved is not None:
-            screen.blit(FOODS[self.food_retrieved], self.hitbox.topleft)
+            food_pos = Vec2d(self.hitbox.topleft) + (-25, -25)
+            screen.blit(FOODS[self.food_retrieved], food_pos)
