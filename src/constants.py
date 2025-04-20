@@ -40,5 +40,11 @@ FRUIT4_POS = (478, 30)
 FRUIT5_POS = (608, 30)
 FRUIT6_POS = (738, 30)
 
+# State Dictionary Keys
+CLOCK = "clock"
+RUNNING = "running"
+TIME_LEFT = "time_left" 
+CURRENT_SCENE = "current_scene"
+
 # Misc
 MAX_DIST = 9999999999

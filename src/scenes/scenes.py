@@ -13,33 +13,33 @@ from src.util.vec2d import *
 pygame.init()
 font = pygame.font.SysFont('Palatino', 30)
 
-def handle_scenes(screen, player, entities, background_image, clock, time_left, current_scene):
-    if current_scene == "MENU":
+def handle_scenes(screen, player, entities, background_image, state):
+    if state[CURRENT_SCENE] == "MENU":
         result = menu(screen)
-    elif current_scene == "SCORE":
+    elif state[CURRENT_SCENE] == "SCORE":
         result = score(screen, player.score)
         player.score = 0
-    elif current_scene == "GAME":
+    elif state[CURRENT_SCENE] == "GAME":
         result = "GAME"
 
         # Handle time out
-        if time_left < 0:
+        if state[TIME_LEFT] < 0:
             result = "SCORE"
-            time_left = 60
+            state[TIME_LEFT] = 60
 
         screen.blit(background_image, (0, 0))
-        clock.tick(60)
+        state[CLOCK].tick(60)
 
-        time_left -= 1/60
+        state[TIME_LEFT] -= 1/60
         for entity in entities:
             entity.draw(screen)
         player.draw(screen)
 
         # Display our user interface
-        time_text = font.render(f'Time: {int(time_left)} sec', True, WHITE)
+        time_text = font.render(f'Time: {int(state[TIME_LEFT])} sec', True, WHITE)
         score_text = font.render(f'Score: {player.score}', True, WHITE)
 
         screen.blit(time_text, (FLOOR_MIN_X, FLOOR_MIN_Y))
         screen.blit(score_text, (FLOOR_MIN_X, FLOOR_MIN_Y + 40))
 
-    return result, time_left
+    state[CURRENT_SCENE] = result

@@ -1,4 +1,5 @@
 import pygame
+from pygame.rect import *
 from pygame.locals import *
 from src.entities.entity import Entity
 from src.constants import *
@@ -18,11 +19,11 @@ class Player(Entity):
         super().__init__(pos)
 
     # Set position and clamp within screen size
-    def update(self, state):
+    def update(self, entities: list[Entity], state):
         self.move()
         keys = pygame.key.get_pressed()
         if keys[K_SPACE]:
-            self.interact_nearest(state)
+            self.interact_nearest(entities)
 
     def move(self):
         keys = pygame.key.get_pressed()

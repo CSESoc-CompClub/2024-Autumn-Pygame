@@ -1,13 +1,15 @@
 import pygame
 from random import choice
 from abc import ABC
+from pygame.rect import *
 
 from src.entities.entity import Entity, NoRangeInteraction
 from src.util.vec2d import Vec2d
 from src.constants import TILE_SIZE
+from src.entities.player import *
 
 from dataclasses import dataclass
-from typing import Union, Any
+from typing import Union
 
 class Effect(NoRangeInteraction, ABC):
     # static props
@@ -21,6 +23,7 @@ class Effect(NoRangeInteraction, ABC):
     def __init__(self, sprite_path: str, despawn_duration, active_duration, pos: Vec2d):
         # need to do this because the position is set in super instantiation
         super().__init__(pos)
+        self._hitbox = Rect(pos.x - TILE_SIZE, pos.y - TILE_SIZE, TILE_SIZE, TILE_SIZE)
 
         self._sprite = pygame.transform.scale(pygame.image.load(sprite_path), Effect.SPRITE_SIZE)
         self._despawn = despawn_duration
@@ -30,16 +33,23 @@ class Effect(NoRangeInteraction, ABC):
     def draw(self, screen: pygame.Surface):
         return screen.blit(self._sprite, self.pos) # type: ignore
     
-    # TODO: add effect behaviours
-    def update(self, entities: list[Entity]):
-        current_time = pygame.time.get_ticks()
-        if current_time - self._spawn_time < self._despawn:
-            return
+    def collide(self, entities):
+        for player in [x for x in entities if type(x) == Player]:
+            if player.hitbox.colliderect(self._hitbox):
+                return player
+    
+    def update(self, entities: list[Entity], state):
+        collided_player = self.collide(entities)
+        if collided_player:
+            if type(self) == TimeEffect:
+                state[TIME_LEFT] += self.time_boost
+            elif type(self) == SpeedEffect:
+                collided_player.speed *= self.speed_boost
+            entities.remove(self)
         
-        for entity in entities:
-            if entity == self:
-                entities.remove(self)
-                break
+        current_time = pygame.time.get_ticks()
+        if current_time - self._spawn_time >= self._despawn:
+            entities.remove(self)                
 
 
 class SpeedEffect(Effect):
@@ -50,6 +60,7 @@ class SpeedEffect(Effect):
             active_duration=10000,
             pos=pos
         )
+        self.speed_boost = 1.2
 
 class TimeEffect(Effect):
     def __init__(self, pos: Vec2d):
@@ -59,6 +70,7 @@ class TimeEffect(Effect):
             active_duration=5000,
             pos=pos
         )
+        self.time_boost = 5 # 5 seconds
     
 
 @dataclass
