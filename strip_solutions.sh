@@ -3,6 +3,12 @@
 SOURCE_DIR="solution"
 DEST_DIR="exercise"
 
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Couldn't find source directory \"solution\". You should run this from \
+the top directory of the repository"
+    exit
+fi
+
 # Remove destination if it exists
 if [ -d "$DEST_DIR" ]; then
     rm -rf "$DEST_DIR"
