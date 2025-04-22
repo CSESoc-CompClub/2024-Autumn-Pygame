@@ -75,17 +75,13 @@ class Customer(Entity):
     # Update customer behavior depending on their current state.
     def update(self, entities: list[Entity], state):
         if self.state == CState.WAITING_FOR_FOOD:
-            self.cur_timer += 1
-            if self.cur_timer >= self.cur_timeout:
-                self.leave(angry=True)
+            pass  # TODO: Place your code here!
 
         elif self.state == CState.EATING:
-            self.cur_timer += 1
-            if self.cur_timer >= self.cur_timeout:
-                self.leave(angry=False)
+            pass  # TODO: Place your code here!
 
         elif self.state == CState.LEAVING:
-            self.destroy(entities)
+            pass  # TODO: Place your code here!
 
     # Called when customer is ready to receive food.
     def receive_order(self):
@@ -95,34 +91,20 @@ class Customer(Entity):
 
     # Begin the eating phase and reset the timer.
     def start_eating(self):
-        self.state = CState.EATING
-        self.cur_timeout = EATING_TIMEOUT
-        self.cur_timer = 0
+        pass  # TODO: Place your code here!
 
     # Trigger customer leaving. Change score based on mood.
     def leave(self, angry: bool):
-        self.state = CState.LEAVING
-        if angry:
-            self.player.score -= 1
-        else:
-            self.player.score += 1
-
-        self.cur_timeout = 0
-        self.cur_timer = 0
+        pass  # TODO: Place your code here!
 
     # Remove the customer from the entity list.
     def destroy(self, entities: list[Entity]):
-        self.time_at_leaving = time.time()
-        entities.remove(self)
-
-    # Called when the player tries to give food to the customer.
-    def interact(self, food_retrieved):
-        if self.state is CState.WAITING_FOR_FOOD:
-            self.try_receive_order(food_retrieved)
+        pass  # TODO: Place your code here!
 
     # Check if the player gave the correct food.
     def try_receive_order(self, food_retrieved) -> bool:
-        if self.order == food_retrieved:
-            self.start_eating()
-        else:
-            self.leave(angry=True)
+        pass  # TODO: Place your code here!
+
+    # Called when the player tries to give food to the customer.
+    def interact(self, food_retrieved):
+        pass  # TODO: Place your code here!

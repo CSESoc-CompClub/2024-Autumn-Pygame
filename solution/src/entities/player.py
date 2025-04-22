@@ -32,12 +32,18 @@ class Player(Entity):
 
     # Called every frame to update player logic
     def update(self, entities: list[Entity], state):
+        # What function do you call to move the player around?
+        # SOLUTION START --
         self.move()
+        # -- SOLUTION END
 
+        # How can we check that the user is pressing the space key?
+        # SOLUTION START --
         # Check for interaction key
         keys = pygame.key.get_pressed()
         if keys[K_SPACE]:
             self.interact_nearest(entities)
+        # -- SOLUTION END
 
     # Handle movement and update sprite based on direction
     def move(self):
@@ -76,6 +82,7 @@ class Player(Entity):
         threshold_interact_distance = 100
         nearest_entity, nearest_distance = get_nearest_entity(self, entities)
 
+        # SOLUTION START --
         # Pick up food
         if type(nearest_entity) is Food:
             if nearest_distance <= threshold_interact_distance:
@@ -85,11 +92,16 @@ class Player(Entity):
         elif type(nearest_entity) is Customer and self.food_retrieved:
             nearest_entity.interact(self.food_retrieved)
             self.food_retrieved = None
+        # -- SOLUTION END
 
     # Draw player and floating food (if any)
     def draw(self, screen: pygame.Surface):
+        # SOLUTION START --
         screen.blit(self.sprite, self.hitbox.topleft)
+        # -- SOLUTION END
 
         if self.food_retrieved is not None:
+            # SOLUTION START --
             food_pos = Vec2d(self.hitbox.topleft) + (-25, -25)
             screen.blit(FOODS[self.food_retrieved], food_pos)
+            # -- SOLUTION END

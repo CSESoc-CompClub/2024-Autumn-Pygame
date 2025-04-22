@@ -75,17 +75,23 @@ class Customer(Entity):
     # Update customer behavior depending on their current state.
     def update(self, entities: list[Entity], state):
         if self.state == CState.WAITING_FOR_FOOD:
+            # SOLUTION START --
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
                 self.leave(angry=True)
+            # -- SOLUTION END
 
         elif self.state == CState.EATING:
+            # SOLUTION START --
             self.cur_timer += 1
             if self.cur_timer >= self.cur_timeout:
                 self.leave(angry=False)
+            # -- SOLUTION END
 
         elif self.state == CState.LEAVING:
+            # SOLUTION START --
             self.destroy(entities)
+            # -- SOLUTION END
 
     # Called when customer is ready to receive food.
     def receive_order(self):
@@ -95,12 +101,15 @@ class Customer(Entity):
 
     # Begin the eating phase and reset the timer.
     def start_eating(self):
+        # SOLUTION START --
         self.state = CState.EATING
         self.cur_timeout = EATING_TIMEOUT
         self.cur_timer = 0
+        # -- SOLUTION END
 
     # Trigger customer leaving. Change score based on mood.
     def leave(self, angry: bool):
+        # SOLUTION START --
         self.state = CState.LEAVING
         if angry:
             self.player.score -= 1
@@ -109,20 +118,27 @@ class Customer(Entity):
 
         self.cur_timeout = 0
         self.cur_timer = 0
+        # -- SOLUTION END
 
     # Remove the customer from the entity list.
     def destroy(self, entities: list[Entity]):
+        # SOLUTION START --
         self.time_at_leaving = time.time()
         entities.remove(self)
-
-    # Called when the player tries to give food to the customer.
-    def interact(self, food_retrieved):
-        if self.state is CState.WAITING_FOR_FOOD:
-            self.try_receive_order(food_retrieved)
+        # -- SOLUTION END
 
     # Check if the player gave the correct food.
     def try_receive_order(self, food_retrieved) -> bool:
+        # SOLUTION START --
         if self.order == food_retrieved:
             self.start_eating()
         else:
             self.leave(angry=True)
+        # -- SOLUTION END
+
+    # Called when the player tries to give food to the customer.
+    def interact(self, food_retrieved):
+        # SOLUTION START --
+        if self.state is CState.WAITING_FOR_FOOD:
+            self.try_receive_order(food_retrieved)
+        # -- SOLUTION END
