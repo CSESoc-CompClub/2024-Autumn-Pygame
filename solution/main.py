@@ -127,6 +127,8 @@ try:
 
         # Cap the frame rate
         state[CLOCK].tick(60)
+except Exception as ex:
+    print(ex)
 finally:
     pygame.quit()
     sys.exit()
