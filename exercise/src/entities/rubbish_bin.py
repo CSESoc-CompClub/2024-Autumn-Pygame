@@ -1,4 +1,3 @@
-# rubbish_bin.py
 import pygame
 from src.entities.entity import Entity
 from src.util.vec2d import Vec2d
