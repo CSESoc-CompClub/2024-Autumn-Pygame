@@ -17,6 +17,7 @@ class Effect(NoRangeInteraction, ABC):
         self._active = active_duration
         self._spawn_time = pygame.time.get_ticks()
 
+
     # Draw the effect sprite on the screen
     def draw(self, screen: pygame.Surface):
         return screen.blit(self._sprite, self.pos)

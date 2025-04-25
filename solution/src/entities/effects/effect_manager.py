@@ -88,6 +88,7 @@ class EffectManager:
                 player = entity
                 break
 
+        # SOLUTION START --
         effect = self.collide(player, entities)
         if effect:
             if type(effect) == TimeEffect:
@@ -109,3 +110,4 @@ class EffectManager:
                 if time_left <= 0:
                     player.speed = PLAYER_SPEED
                     self.timers[SpeedEffect] = None
+         # -- SOLUTION END

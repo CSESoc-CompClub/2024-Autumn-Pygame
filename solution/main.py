@@ -70,9 +70,7 @@ for i in range(0, num_food()):
 # Return a random food
 # This function picks a random food from the list of foods.
 def getRandomFood():
-    # SOLUTION START --
     return foods[random.randint(0, num_food() - 1)]
-    # -- SOLUTION END
 
 # Adding customers
 customer_pos = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]

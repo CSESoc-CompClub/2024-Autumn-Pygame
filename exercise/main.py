@@ -70,7 +70,7 @@ for i in range(0, num_food()):
 # Return a random food
 # This function picks a random food from the list of foods.
 def getRandomFood():
-    pass  # TODO: Place your code here!
+    return foods[random.randint(0, num_food() - 1)]
 
 # Adding customers
 customer_pos = [CUST1_POS, CUST2_POS, CUST3_POS, CUST4_POS, CUST5_POS]
@@ -81,7 +81,8 @@ for position in customer_pos:
     entities.append(customer)
 
 # Adding effects
-effects = EffectManager()
+# TODO: uncomment below if finished with day 2 features
+# effects = EffectManager()
 
 # The initial state of our game
 state = {
@@ -107,7 +108,8 @@ try:
                 break
 
             # Handle effect-related events
-            effects.handle_events(event, entities)
+            # TODO: uncomment below if finished with day 2 features
+            # effects.handle_events(event, entities)
 
         if not state[RUNNING]:
             break
@@ -117,7 +119,8 @@ try:
             entity.update(entities, state)
 
         respawn_customer(customers, customer_pos, entities, player)
-        effects.update(entities, state)
+        # TODO: uncomment below if finished with day 2 features
+        # effects.update(entities, state)
 
         # Render
         handle_scenes(screen, player, entities, background_image, state)

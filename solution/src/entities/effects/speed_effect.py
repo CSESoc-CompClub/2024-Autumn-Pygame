@@ -4,6 +4,7 @@ from src.constants import SPEED_BOOST, SPEED_DURATION
 
 class SpeedEffect(Effect):
     # Initialise speed effect with position
+    # SOLUTION START --
     def __init__(self, pos: Vec2d):
         super().__init__(
             sprite_path="./sprites/effects/speedboost.png",
@@ -13,3 +14,4 @@ class SpeedEffect(Effect):
         )
         self.speed_boost = SPEED_BOOST
         self.speed_duration = SPEED_DURATION
+    # -- SOLUTION END

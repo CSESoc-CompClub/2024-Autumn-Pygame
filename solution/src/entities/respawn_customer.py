@@ -13,6 +13,7 @@ def getRandomFood():
 
 # Respawn a customer that has left after 8 seconds
 def respawn_customer(customers, customer_pos, entities, player):
+    # SOLUTION START --
     for i, customer in enumerate(customers):
         if customer not in entities:
             time_passed = time.time() - customer.time_at_leaving
@@ -20,3 +21,4 @@ def respawn_customer(customers, customer_pos, entities, player):
                 customer = Customer(getRandomFood(), player, Vec2d(customer_pos[i]))
                 customers[i] = customer
                 entities.append(customer)
+    # -- SOLUTION END

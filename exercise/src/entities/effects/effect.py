@@ -10,12 +10,7 @@ class Effect(NoRangeInteraction, ABC):
 
     # Initialise the effect with sprite path, despawn duration, active duration and position
     def __init__(self, sprite_path: str, despawn_duration, active_duration, pos: Vec2d):
-        NoRangeInteraction.__init__(self, pos)
-        self._hitbox = Rect(pos.x - TILE_SIZE, pos.y - TILE_SIZE, TILE_SIZE, TILE_SIZE)
-        self._sprite = pygame.transform.scale(pygame.image.load(sprite_path), Effect.SPRITE_SIZE)
-        self._despawn = despawn_duration
-        self._active = active_duration
-        self._spawn_time = pygame.time.get_ticks()
+        pass  # TODO: Place your code here!
 
     # Draw the effect sprite on the screen
     def draw(self, screen: pygame.Surface):

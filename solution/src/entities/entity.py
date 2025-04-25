@@ -20,18 +20,15 @@ class NoRangeInteraction(Entity):
 
 # Calculate and return the distance between two entities.
 def get_entities_distance(entity1: Entity, entity2: Entity) -> float:
-    # SOLUTION START --
     pos1 = entity1.get_position()
     pos2 = entity2.get_position()
 
     # Use Vec2d distance method
     return pos1.get_distance(pos2)
-    # -- SOLUTION END
 
 
 # Return the closest entity to the given one, skipping itself and any NoRangeInteraction objects.
 def get_nearest_entity(entity: Entity, entities: list[Entity]) -> tuple[Entity, float]:
-    # SOLUTION START --
     nearest_entity = entities[0]
     nearest_distance = math.inf  # Start with a large number
 
@@ -44,4 +41,3 @@ def get_nearest_entity(entity: Entity, entities: list[Entity]) -> tuple[Entity, 
                 nearest_distance = distance
 
     return nearest_entity, nearest_distance
-    # -- SOLUTION END
