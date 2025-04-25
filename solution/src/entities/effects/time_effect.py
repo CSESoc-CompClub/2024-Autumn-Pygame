@@ -5,6 +5,7 @@ from src.constants import TIME_BOOST
 class TimeEffect(Effect):
     # Initialise time effect with position
     def __init__(self, pos: Vec2d):
+        # SOLUTION START --
         super().__init__(
             sprite_path="./sprites/effects/timeboost.png",
             despawn_duration=5000,
@@ -12,3 +13,4 @@ class TimeEffect(Effect):
             pos=pos
         )
         self.time_boost = TIME_BOOST
+        # -- SOLUTION END
