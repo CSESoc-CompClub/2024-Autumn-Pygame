@@ -13,11 +13,12 @@ from src.util.vec2d import *
 pygame.init()
 font = pygame.font.SysFont('Palatino', 30)
 
-def handle_scenes(screen, player, entities, background_image, state):
+def handle_scenes(screen, player, entities, background_image, state, leaderboard):
     if state[CURRENT_SCENE] == "MENU":
         result = menu(screen)
     elif state[CURRENT_SCENE] == "SCORE":
-        result = score(screen, player.score)
+        leaderboard.write(f"{player.score}|")
+        result = score(screen, player.score, leaderboard)
         player.score = 0
     elif state[CURRENT_SCENE] == "GAME":
         result = "GAME"

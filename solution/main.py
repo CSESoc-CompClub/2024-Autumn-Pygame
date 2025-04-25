@@ -91,7 +91,7 @@ effects = EffectManager()
 state = {
     CLOCK: pygame.time.Clock(),
     RUNNING: True,
-    TIME_LEFT: 60,
+    TIME_LEFT: 10,
     CURRENT_SCENE: "MENU"
 }
 # Adding rubbish bin
@@ -103,6 +103,8 @@ entities.append(rubbish_bin)
 
 # Everything is rendered from the top to the bottom, so we start off by drawing
 # the window, then background, our entities, then our user interface (ie the score/timer text)
+
+leaderboard = open("leaderboard.txt", "a+")
 
 try:
     while state[RUNNING]:
@@ -126,7 +128,7 @@ try:
         effects.update(entities, state)
 
         # Render
-        handle_scenes(screen, player, entities, background_image, state)
+        handle_scenes(screen, player, entities, background_image, state, leaderboard)
         pygame.display.update()
 
         # Cap the frame rate
@@ -134,5 +136,6 @@ try:
 except Exception as ex:
     print(ex)
 finally:
+    leaderboard.close()
     pygame.quit()
     sys.exit()
