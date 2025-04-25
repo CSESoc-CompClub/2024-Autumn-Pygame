@@ -6,6 +6,7 @@ from src.constants import *
 from src.util.vec2d import Vec2d
 from src.entities.customer import *
 from src.entities.food import Food
+from src.entities.rubbish_bin import RubbishBin
 
 # Load and scale a sprite to a given size
 def load_sprite(sprite_path: str, size: tuple[int, int]):
@@ -33,6 +34,8 @@ class Player(Entity):
     # Called every frame to update player logic
     def update(self, entities: list[Entity], state):
         # What function do you call to move the player around?
+        pass  # TODO: Place your code here!
+
         pass  # TODO: Place your code here!
 
         # How can we check that the user is pressing the space key?
@@ -83,3 +86,5 @@ class Player(Entity):
 
         if self.food_retrieved is not None:
             pass  # TODO: Place your code here!
+
+

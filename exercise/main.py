@@ -18,6 +18,8 @@ from src.entities.effects.effect_manager import EffectManager
 from src.util.vec2d import *
 from src.scenes.scenes import handle_scenes
 from src.entities.respawn_customer import respawn_customer
+from src.entities.rubbish_bin import RubbishBin
+
 
 # #############################################################################
 # ########################## Initialise pygame ################################
@@ -90,7 +92,9 @@ state = {
     TIME_LEFT: 60,
     CURRENT_SCENE: "MENU"
 }
-
+# Adding rubbish bin
+rubbish_bin = RubbishBin(Vec2d(700, 150))
+entities.append(rubbish_bin)
 # #############################################################################
 # ################################ Game Loop ##################################
 # #############################################################################
