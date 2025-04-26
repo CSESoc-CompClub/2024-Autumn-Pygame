@@ -81,8 +81,7 @@ for position in customer_pos:
     entities.append(customer)
 
 # Adding effects
-# TODO: uncomment below if finished with day 2 features
-# effects = EffectManager()
+#effects = EffectManager()
 
 # The initial state of our game
 state = {
@@ -108,8 +107,7 @@ try:
                 break
 
             # Handle effect-related events
-            # TODO: uncomment below if finished with day 2 features
-            # effects.handle_events(event, entities)
+            #effects.handle_events(event, entities)
 
         if not state[RUNNING]:
             break
@@ -119,8 +117,7 @@ try:
             entity.update(entities, state)
 
         respawn_customer(customers, customer_pos, entities, player)
-        # TODO: uncomment below if finished with day 2 features
-        # effects.update(entities, state)
+        #effects.update(entities, state)
 
         # Render
         handle_scenes(screen, player, entities, background_image, state)

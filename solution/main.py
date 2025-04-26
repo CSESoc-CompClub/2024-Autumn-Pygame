@@ -81,7 +81,7 @@ for position in customer_pos:
     entities.append(customer)
 
 # Adding effects
-effects = EffectManager()
+#effects = EffectManager()
 
 # The initial state of our game
 state = {
@@ -107,7 +107,7 @@ try:
                 break
 
             # Handle effect-related events
-            effects.handle_events(event, entities)
+            #effects.handle_events(event, entities)
 
         if not state[RUNNING]:
             break
@@ -117,7 +117,7 @@ try:
             entity.update(entities, state)
 
         respawn_customer(customers, customer_pos, entities, player)
-        effects.update(entities, state)
+        #effects.update(entities, state)
 
         # Render
         handle_scenes(screen, player, entities, background_image, state)
