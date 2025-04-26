@@ -8,6 +8,7 @@ from src.constants import TILE_SIZE
 class Effect(NoRangeInteraction, ABC):
     SPRITE_SIZE = (TILE_SIZE, TILE_SIZE)
 
+#EXPLAIN EFFECT.PY AND WHAT IT DOES AND ITS ROLE, E.G. MAIN.PY FOR EFFECTS
     # Initialise the effect with sprite path, despawn duration, active duration and position
     def __init__(self, sprite_path: str, despawn_duration, active_duration, pos: Vec2d):
         NoRangeInteraction.__init__(self, pos)

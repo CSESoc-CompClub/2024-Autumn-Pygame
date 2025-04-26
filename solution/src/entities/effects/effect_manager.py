@@ -91,23 +91,26 @@ class EffectManager:
         # SOLUTION START --
         effect = self.collide(player, entities)
         if effect:
-            if type(effect) == TimeEffect:
-                state[TIME_LEFT] += effect.time_boost
-            elif type(effect) == SpeedEffect:
+            #implement speed effect
+            if type(effect) == SpeedEffect:
                 player.speed *= effect.speed_boost
                 self.timers[SpeedEffect] = pygame.time.get_ticks() + effect.speed_duration
+            elif type(effect) == TimeEffect:
+                state[TIME_LEFT] += effect.time_boost
 
             entities.remove(effect)
 
         # Update any effect timers
         current_time = pygame.time.get_ticks()
-        for timer in [x for x in self.timers.keys() if self.timers[x] is not None]:
-            if timer == SpeedEffect:
-                time_left = self.timers[SpeedEffect] - current_time
-                # Decaying speed boost
-                bonus_speed = time_left / SPEED_DURATION * SPEED_BOOST
-                player.speed = PLAYER_SPEED + bonus_speed
-                if time_left <= 0:
-                    player.speed = PLAYER_SPEED
-                    self.timers[SpeedEffect] = None
-         # -- SOLUTION END
+        for x in ():
+            for timer in x: 
+                if self.timers[x] is not None:
+                    if timer == SpeedEffect:
+                        time_left = self.timers[SpeedEffect] - current_time
+                        # Decaying speed boost
+                        bonus_speed = time_left / SPEED_DURATION * SPEED_BOOST
+                        player.speed = PLAYER_SPEED + bonus_speed
+                        if time_left <= 0:
+                            player.speed = PLAYER_SPEED
+                            self.timers[SpeedEffect] = None
+        # -- SOLUTION END
